@@ -1,0 +1,27 @@
+Binary Tree:
+Diameter of tree
+Height of tree
+Max path sum
+Tree traversals
+LCA (Lowest Common Ancestor)
+
+
+Binary Search Tree:
+✔ Easy
+Find height of a binary tree
+Count leaf nodes
+Inorder/Preorder/Postorder traversal
+Insert into BST
+
+✔ Medium
+Validate a BST
+Lowest Common Ancestor (LCA)
+Diameter of Binary Tree
+Level order + Zigzag traversal
+Construct tree from preorder & inorder
+
+✔ Hard
+Maximum Path Sum
+Serialize & Deserialize a tree
+Kth smallest element in BST
+Recover BST (two nodes swapped)

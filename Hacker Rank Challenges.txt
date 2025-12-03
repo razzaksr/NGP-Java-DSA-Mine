@@ -1,0 +1,2642 @@
+Slug: health-metrics-calculator
+Perfect 👍 — let’s enrich the **Health Metrics Calculator HackerRank challenge** by explicitly including the **formulas for BMI, BMR, and IBW** in the problem statement. This way, your trainees not only practice **encapsulation, constructor overloading, method overloading, and menu‑driven programs**, but also understand the **domain logic** behind the calculations.
+
+---
+
+## 🏥 HackerRank Challenge: Health Metrics Calculator
+
+### Problem Statement
+You are tasked with building a **Health Metrics Calculator** for patients.  
+The system should allow a user to calculate:
+
+- **BMI (Body Mass Index)**  
+- **BMR (Basal Metabolic Rate)**  
+- **IBW (Ideal Body Weight)**  
+
+Your program must demonstrate:  
+- **Encapsulation** → private fields with getters/setters.  
+- **Constructor Overloading** → initialize patient with default values or with user‑provided values.  
+- **Method Overloading** → calculation methods should be overloaded where appropriate.  
+- **Menu‑Driven Program** → use switch‑case to let the user choose which metric to calculate.  
+
+---
+
+### Formula Reference (for trainees)
+
+BMI = 	
+mass (kg)
+height2 (m)
+ = 	
+72.57
+1.7782
+ = 23.0
+
+
+- **BMR (Basal Metabolic Rate):**  
+  - For males:  
+    \[
+    BMR = 10 \times \text{Weight (kg)} + 6.25 \times \text{Height (cm)} - 5 \times \text{Age} + 5
+    \]  
+  - For females:  
+    \[
+    BMR = 10 \times \text{Weight (kg)} + 6.25 \times \text{Height (cm)} - 5 \times \text{Age} - 161
+    \]
+
+- **IBW (Ideal Body Weight) — Devine Formula:**  
+  - For males:  
+    \[
+    IBW = 50 + 2.3 \times (\text{Height (inches)} - 60)
+    \]  
+  - For females:  
+    \[
+    IBW = 45.5 + 2.3 \times (\text{Height (inches)} - 60)
+    \]
+
+---
+
+### Input Format
+- First line: Patient’s name (string)  
+- Second line: Age (integer)  
+- Third line: Gender (`M` or `F`)  
+- Fourth line: Weight in kilograms (double)  
+- Fifth line: Height in centimeters (double)  
+- Sixth line: Operation choice (`BMI`, `BMR`, `IBW`, or `Report`)  
+
+---
+
+### Output Format
+- For `BMI`: Print `"BMI: X.YZ"`  
+- For `BMR`: Print `"BMR: X.YZ kcal/day"`  
+- For `IBW`: Print `"Ideal Body Weight: X.YZ kg"`  
+- For `Report`: Print all three metrics in a formatted report.  
+
+---
+
+### Constraints
+- `1 <= age <= 120`  
+- `30 <= heightCm <= 250`  
+- `2 <= weightKg <= 300`  
+- Gender must be `M` or `F`.  
+
+---
+
+### Sample Input 1
+```
+Alice
+28
+F
+60
+165
+BMI
+```
+
+### Sample Output 1
+```
+BMI: 22.04
+```
+
+---
+
+### Sample Input 2
+```
+John
+35
+M
+80
+175
+Report
+```
+
+### Sample Output 2
+```
+--- Health Report for John ---
+BMI: 26.12
+BMR: 1745.25 kcal/day
+Ideal Body Weight: 72.57 kg
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.Scanner;
+
+class Patient {
+    private String name;
+    private int age;
+    private char gender;
+    private double weightKg;
+    private double heightCm;
+
+    // Constructor Overloading
+    public Patient() {
+        this.name = "Unknown";
+        this.age = 0;
+        this.gender = 'M';
+        this.weightKg = 0;
+        this.heightCm = 0;
+    }
+
+    public Patient(String name, int age, char gender, double weightKg, double heightCm) {
+        this.name = name;
+        this.age = age;
+        this.gender = Character.toUpperCase(gender);
+        this.weightKg = weightKg;
+        this.heightCm = heightCm;
+    }
+
+    // Encapsulation: getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+
+    public char getGender() { return gender; }
+    public void setGender(char gender) { this.gender = Character.toUpperCase(gender); }
+
+    public double getWeightKg() { return weightKg; }
+    public void setWeightKg(double weightKg) { this.weightKg = weightKg; }
+
+    public double getHeightCm() { return heightCm; }
+    public void setHeightCm(double heightCm) { this.heightCm = heightCm; }
+
+    // Method Overloading
+    public double calculateBMI() {
+        double heightM = heightCm / 100;
+        return weightKg / (heightM * heightM);
+    }
+
+    public double calculateBMR() {
+        if (gender == 'M') {
+            return 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
+        } else {
+            return 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+        }
+    }
+
+    public double calculateIBW() {
+        double heightInInches = heightCm / 2.54;
+        double base = (gender == 'M') ? 50 : 45.5;
+        return base + 2.3 * (heightInInches - 60);
+    }
+
+    // Overloaded method: menu-driven calculation
+    public void calculate(String choice) {
+        switch(choice.toLowerCase()) {
+            case "bmi":
+                System.out.printf("BMI: %.2f\n", calculateBMI());
+                break;
+            case "bmr":
+                System.out.printf("BMR: %.2f kcal/day\n", calculateBMR());
+                break;
+            case "ibw":
+                System.out.printf("Ideal Body Weight: %.2f kg\n", calculateIBW());
+                break;
+            case "report":
+                System.out.println("--- Health Report for " + name + " ---");
+                System.out.printf("BMI: %.2f\n", calculateBMI());
+                System.out.printf("BMR: %.2f kcal/day\n", calculateBMR());
+                System.out.printf("Ideal Body Weight: %.2f kg\n", calculateIBW());
+                break;
+            default:
+                System.out.println("Invalid choice");
+        }
+    }
+}
+
+public class HealthApp {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        String name = sc.nextLine();
+        int age = sc.nextInt();
+        char gender = sc.next().charAt(0);
+        double weight = sc.nextDouble();
+        double height = sc.nextDouble();
+        sc.nextLine(); // consume newline
+        String choice = sc.nextLine();
+
+        Patient p = new Patient(name, age, gender, weight, height);
+        p.calculate(choice);
+
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ Now the challenge explicitly teaches **the formulas** along with the coding concepts.  
+Would you like me to prepare **another vertical (e.g., Hospital or Library)** in the same HackerRank format, also with formulas relevant to that domain (like consultation charges or late fees)?
+
+
+
+Slug: logistics-shipment-management
+Perfect 👍 — let’s design a **Logistics vertical HackerRank‑style coding challenge** that emphasizes:
+
+- **Encapsulation** (private fields + getters/setters)  
+- **Constructor Overloading** (default and parameterized constructors)  
+- **Method Overloading** (mandatory: booking shipments with different parameter sets)  
+- **Menu‑Driven Program** (switch‑case for user choice)  
+- **No arrays or collections** (just a single shipment object at a time)  
+
+---
+
+## 🚚 HackerRank Challenge: Logistics Shipment Calculator
+
+### Problem Statement
+You are tasked with building a **Logistics Shipment Calculator** for a courier company.  
+The system should allow a customer to manage a single shipment and calculate charges.  
+
+Your program must demonstrate:  
+- **Encapsulation** → private fields with getters/setters.  
+- **Constructor Overloading** → initialize shipment with default values or with user‑provided values.  
+- **Method Overloading** → booking can be done either by weight alone or by weight + destination.  
+- **Menu‑Driven Program** → use switch‑case to let the user choose operations.  
+
+---
+
+### Formula Reference (for trainees)
+
+- **Shipment Charges:**  
+  \[
+  \text{Charges} = \text{Weight (kg)} \times 50
+  \]  
+- **Heavy Package Handling Fee:**  
+  If weight > 10 kg, add ₹200 extra.  
+
+---
+
+### Input Format
+- First line: Customer name (string)  
+- Second line: Operation choice (`Book`, `Cancel`, `Charges`, `Report`)  
+- If `Book`: next line contains shipment weight (double). Optionally, another line contains destination (string).  
+- If `Cancel`: next line contains shipment ID (integer).  
+- If `Charges`: next 3 lines contain shipment weights (double).  
+- If `Report`: print details of the current shipment.  
+
+---
+
+### Output Format
+- For `Book`:  
+  - `"Shipment booked: ID 1, Weight X kg"`  
+  - or `"Shipment booked: ID 1, Weight X kg, Destination Y"`  
+- For `Cancel`: `"Shipment ID 1 cancelled"` or `"Shipment not found"`  
+- For `Charges`: `"Total Charges: Z"`  
+- For `Report`: Print shipment details if active, else `"No active shipment"`  
+
+---
+
+### Constraints
+- Only one shipment can be active at a time.  
+- Shipment ID is always `1` for simplicity.  
+- Charges = weight × 50 (+200 if weight > 10 kg).  
+
+---
+
+### Sample Input 1
+```
+Alice
+Book
+12
+Chennai
+```
+
+### Sample Output 1
+```
+Shipment booked: ID 1, Weight 12.0 kg, Destination Chennai
+```
+
+---
+
+### Sample Input 2
+```
+Bob
+Charges
+5
+12
+8
+```
+
+### Sample Output 2
+```
+Total Charges: 1350.0
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.Scanner;
+
+class Shipment {
+    private int shipmentId;
+    private double weight;
+    private String destination;
+
+    // Constructor Overloading
+    public Shipment() {
+        this.shipmentId = 0;
+        this.weight = 0;
+        this.destination = null;
+    }
+
+    public Shipment(double weight) {
+        this.shipmentId = 1;
+        this.weight = weight;
+    }
+
+    public Shipment(double weight, String destination) {
+        this.shipmentId = 1;
+        this.weight = weight;
+        this.destination = destination;
+    }
+
+    // Encapsulation: getters and setters
+    public int getShipmentId() { return shipmentId; }
+    public void setShipmentId(int shipmentId) { this.shipmentId = shipmentId; }
+
+    public double getWeight() { return weight; }
+    public void setWeight(double weight) { this.weight = weight; }
+
+    public String getDestination() { return destination; }
+    public void setDestination(String destination) { this.destination = destination; }
+
+    // Method Overloading for booking
+    public void book(double weight) {
+        this.shipmentId = 1;
+        this.weight = weight;
+        System.out.println("Shipment booked: ID " + shipmentId + ", Weight " + weight + " kg");
+    }
+
+    public void book(double weight, String destination) {
+        this.shipmentId = 1;
+        this.weight = weight;
+        this.destination = destination;
+        System.out.println("Shipment booked: ID " + shipmentId + ", Weight " + weight + " kg, Destination " + destination);
+    }
+
+    // Cancel shipment
+    public void cancel(int id) {
+        if(this.shipmentId == id) {
+            System.out.println("Shipment ID " + id + " cancelled");
+            this.shipmentId = 0;
+            this.weight = 0;
+            this.destination = null;
+        } else {
+            System.out.println("Shipment not found");
+        }
+    }
+
+    // Calculate charges
+    public void calculateCharges() {
+        Scanner sc = new Scanner(System.in);
+        double total = 0;
+        for(int i=0; i<3; i++) {
+            double w = sc.nextDouble();
+            total += w * 50;
+            if(w > 10) {
+                total += 200;
+            }
+        }
+        System.out.println("Total Charges: " + total);
+    }
+
+    // Report
+    public void report() {
+        if(shipmentId != 0) {
+            System.out.println("--- Shipment Report ---");
+            System.out.println("Shipment ID: " + shipmentId);
+            System.out.println("Weight: " + weight + " kg");
+            if(destination != null) {
+                System.out.println("Destination: " + destination);
+            }
+        } else {
+            System.out.println("No active shipment");
+        }
+    }
+}
+
+public class LogisticsApp {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String customerName = sc.nextLine();
+        String choice = sc.nextLine();
+
+        Shipment shipment = new Shipment();
+
+        switch(choice.toLowerCase()) {
+            case "book":
+                double weight = sc.nextDouble();
+                if(sc.hasNext()) {
+                    String dest = sc.next();
+                    shipment.book(weight, dest);
+                } else {
+                    shipment.book(weight);
+                }
+                break;
+            case "cancel":
+                int id = sc.nextInt();
+                shipment.cancel(id);
+                break;
+            case "charges":
+                shipment.calculateCharges();
+                break;
+            case "report":
+                shipment.report();
+                break;
+            default:
+                System.out.println("Invalid choice");
+        }
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is now fully in **HackerRank format** with:  
+- Clear problem statement  
+- Input/Output format  
+- Constraints  
+- Sample cases  
+- Skeleton code  
+
+Would you like me to also prepare **Hospital vertical** in the same style (with formulas for consultation charges), so you have multiple practice problems for trainees?
+
+
+
+
+
+slug: shipment-analyzer
+Perfect 👍 — let’s now wrap the **Logistics Shipment Analyzer** into a **HackerRank‑style coding challenge** with clear problem statement, input/output format, constraints, sample cases, and skeleton code. I’ll also include **3 test cases** so your trainees can practice.
+
+---
+
+# 🚚 HackerRank Challenge: Logistics Shipment Analyzer
+
+### Problem Statement
+You are tasked with building a **Logistics Shipment Analyzer** for a courier company.  
+The system should allow a logistics company to analyze shipment weights.  
+
+Your program must demonstrate:  
+- **Interface** → define a method for calculating the average shipment weight.  
+- **Abstract Class** → define an abstract method for displaying all shipments and a concrete method for filtering shipments heavier than a threshold.  
+- **Inheritance** → extend the abstract class and implement the interface.  
+- **Overriding** → provide concrete implementations for abstract/interface methods.  
+
+---
+
+### Input Format
+- First line: Operation choice (`DisplayAll`, `Filter`, `Average`).  
+- If `Filter`: next line contains threshold weight (integer).  
+
+---
+
+### Output Format
+- For `DisplayAll`: Print all shipment weights.  
+- For `Filter`: Print shipments heavier than the given threshold.  
+- For `Average`: Print the average shipment weight.  
+
+---
+
+### Constraints
+- Shipment weights are stored in an integer array inside the abstract class.  
+- At least 10 shipment weights should be present.  
+
+---
+
+### Sample Test Case 1
+**Input**
+```
+DisplayAll
+```
+
+**Output**
+```
+All shipment weights:
+120
+450
+300
+800
+150
+600
+200
+750
+500
+1000
+```
+
+---
+
+### Sample Test Case 2
+**Input**
+```
+Filter
+500
+```
+
+**Output**
+```
+Shipments heavier than 500 kg:
+800
+600
+750
+1000
+```
+
+---
+
+### Sample Test Case 3
+**Input**
+```
+Average
+```
+
+**Output**
+```
+Average shipment weight: 487.0
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+package oops;
+import java.util.Scanner;
+
+// Interface
+interface ShipmentAnalysis {
+    void calculateAverage();
+}
+
+// Abstract class
+abstract class Shipments {
+    int[] weights = {120, 450, 300, 800, 150, 600, 200, 750, 500, 1000};
+
+    // Abstract method
+    public abstract void displayAll();
+
+    // Concrete method
+    public void filterByThreshold(int threshold) {
+        System.out.println("Shipments heavier than " + threshold + " kg:");
+        for(int w : weights) {
+            if(w > threshold) {
+                System.out.println(w);
+            }
+        }
+    }
+}
+
+// Concrete class extending abstract class and implementing interface
+public class LogisticsApp extends Shipments implements ShipmentAnalysis {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String choice = sc.nextLine();
+
+        LogisticsApp app = new LogisticsApp();
+
+        switch(choice.toLowerCase()) {
+            case "displayall":
+                app.displayAll();
+                break;
+            case "filter":
+                int threshold = sc.nextInt();
+                app.filterByThreshold(threshold);
+                break;
+            case "average":
+                app.calculateAverage();
+                break;
+            default:
+                System.out.println("Invalid choice");
+        }
+        sc.close();
+    }
+
+    @Override
+    public void displayAll() {
+        System.out.println("All shipment weights:");
+        for(int w : weights) {
+            System.out.println(w);
+        }
+    }
+
+    @Override
+    public void calculateAverage() {
+        int sum = 0;
+        for(int w : weights) {
+            sum += w;
+        }
+        double avg = (double) sum / weights.length;
+        System.out.println("Average shipment weight: " + avg);
+    }
+}
+```
+
+---
+
+✨ This challenge is **exactly at the same difficulty level** as your uploaded example, but with **different functionality** (average calculation, threshold filtering, display).  
+Would you like me to now prepare a **Hospital vertical** in the same HackerRank format, so you can give trainees multiple practice problems across domains?
+
+
+
+
+
+slug: insurance-claim-analyzer
+
+Got it 👍 — let’s design an **Insurance vertical HackerRank‑style challenge** that uses **interface, abstract class, overriding, and inheritance** but with **different functionality** than the earlier “find max / filter / list all” style.  
+
+---
+
+# 🛡️ HackerRank Challenge: Insurance Claim Analyzer
+
+### Problem Statement
+You are tasked with building an **Insurance Claim Analyzer** for an insurance company.  
+The system should allow the company to analyze claim amounts.  
+
+Your program must demonstrate:  
+- **Interface** → define a method for calculating the **total claim payout**.  
+- **Abstract Class** → define an abstract method for displaying all claims and a concrete method for identifying **fraud‑suspected claims** (claims below a threshold).  
+- **Inheritance** → extend the abstract class and implement the interface.  
+- **Overriding** → provide concrete implementations for abstract/interface methods.  
+
+---
+
+### Input Format
+- First line: Operation choice (`DisplayAll`, `FraudCheck`, `Total`).  
+- If `FraudCheck`: next line contains threshold claim amount (integer).  
+
+---
+
+### Output Format
+- For `DisplayAll`: Print all claim amounts.  
+- For `FraudCheck`: Print claims below the given threshold.  
+- For `Total`: Print the total claim payout.  
+
+---
+
+### Constraints
+- Claim amounts are stored in an integer array inside the abstract class.  
+- At least 10 claim amounts should be present.  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+DisplayAll
+```
+
+**Output**
+```
+All claim amounts:
+12000
+8000
+15000
+5000
+30000
+7000
+4000
+6000
+20000
+9000
+```
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+FraudCheck
+7000
+```
+
+**Output**
+```
+Claims suspected as fraud (below 7000):
+5000
+4000
+6000
+```
+
+---
+
+### Sample Test Case 3  
+**Input**
+```
+Total
+```
+
+**Output**
+```
+Total claim payout: 116000
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+package oops;
+import java.util.Scanner;
+
+// Interface
+interface ClaimAnalysis {
+    void calculateTotal();
+}
+
+// Abstract class
+abstract class Claims {
+    int[] amounts = {12000, 8000, 15000, 5000, 30000, 7000, 4000, 6000, 20000, 9000};
+
+    // Abstract method
+    public abstract void displayAll();
+
+    // Concrete method
+    public void fraudCheck(int threshold) {
+        System.out.println("Claims suspected as fraud (below " + threshold + "):");
+        for(int amt : amounts) {
+            if(amt < threshold) {
+                System.out.println(amt);
+            }
+        }
+    }
+}
+
+// Concrete class extending abstract class and implementing interface
+public class InsuranceApp extends Claims implements ClaimAnalysis {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String choice = sc.nextLine();
+
+        InsuranceApp app = new InsuranceApp();
+
+        switch(choice.toLowerCase()) {
+            case "displayall":
+                app.displayAll();
+                break;
+            case "fraudcheck":
+                int threshold = sc.nextInt();
+                app.fraudCheck(threshold);
+                break;
+            case "total":
+                app.calculateTotal();
+                break;
+            default:
+                System.out.println("Invalid choice");
+        }
+        sc.close();
+    }
+
+    @Override
+    public void displayAll() {
+        System.out.println("All claim amounts:");
+        for(int amt : amounts) {
+            System.out.println(amt);
+        }
+    }
+
+    @Override
+    public void calculateTotal() {
+        int sum = 0;
+        for(int amt : amounts) {
+            sum += amt;
+        }
+        System.out.println("Total claim payout: " + sum);
+    }
+}
+```
+
+---
+
+✨ Notice how this differs from earlier challenges:  
+- Instead of **max / boundary / list**, we now have:  
+  - **Total payout** (interface method)  
+  - **Fraud check** (concrete method in abstract class)  
+  - **Display all claims** (abstract method)  
+
+Same **difficulty level**, but **different functionality**.  
+
+Would you like me to now prepare a **Hospital vertical** with another unique functionality (e.g., patient billing summary, consultation count, etc.) so you have multiple varied challenges?
+
+
+
+slug: banking-interest-calculator-with-exception-handling
+
+
+Perfect 👍 — let’s design a **HackerRank‑style coding challenge** around **ArithmeticException** where the program gives the user **another chance** if the exception occurs (instead of just printing an error and stopping).  
+
+I’ll keep it **simple and industry‑relevant** in the **Banking vertical**.
+
+---
+
+# 🏦 HackerRank Challenge: Banking EMI Calculator with Exception Handling
+
+### Problem Statement
+You are tasked with building a simple **Banking EMI Calculator**.  
+The system should allow a user to calculate the **monthly EMI (Equated Monthly Installment)** for a loan.  
+
+- Formula:  
+  \[
+  EMI = \frac{\text{Principal} \times \text{Rate}}{\text{Months}}
+  \]  
+  where Rate is a fixed percentage (e.g., 10%).  
+
+- If the user enters **zero months**, an `ArithmeticException` will occur.  
+- Your program must **handle the exception** and give the user **another chance** to enter a valid number of months.  
+
+---
+
+### Input Format
+- First line: Principal amount (integer)  
+- Second line: Interest rate (integer, percentage)  
+- Third line: Number of months (integer)  
+
+If months = 0, the program should catch the exception and prompt the user again to enter months.  
+
+---
+
+### Output Format
+- If months > 0: Print `"Monthly EMI: X"`  
+- If months = 0: Print `"Invalid division: months cannot be zero"` and ask again.  
+
+---
+
+### Constraints
+- 1 ≤ Principal ≤ 10^6  
+- 1 ≤ Rate ≤ 100  
+- Months ≥ 0  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+10000
+10
+12
+```
+
+**Output**
+```
+Monthly EMI: 83
+```
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+5000
+8
+0
+24
+```
+
+**Output**
+```
+Invalid division: months cannot be zero
+Monthly EMI: 16
+```
+
+---
+
+### Sample Test Case 3  
+**Input**
+```
+20000
+12
+0
+0
+36
+```
+
+**Output**
+```
+Invalid division: months cannot be zero
+Invalid division: months cannot be zero
+Monthly EMI: 66
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.Scanner;
+
+public class BankingEMI {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int principal = sc.nextInt();
+        int rate = sc.nextInt();
+        int months = 0;
+        boolean valid = false;
+
+        while(!valid) {
+            try {
+                months = sc.nextInt();
+                int emi = (principal * rate) / (months * 100); // may throw ArithmeticException
+                System.out.println("Monthly EMI: " + emi);
+                valid = true; // exit loop if successful
+            } catch (ArithmeticException e) {
+                System.out.println("Invalid division: months cannot be zero");
+                // loop continues, giving another chance
+            }
+        }
+
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge teaches trainees:  
+- How `ArithmeticException` occurs (division by zero).  
+- How to **catch and handle** it.  
+- How to **retry until valid input is given** (loop + exception handling).  
+
+Would you like me to also prepare a **Retail vertical version** (e.g., average sales per day with retry on zero days) so you can give them multiple industry‑specific practice problems?
+
+
+
+
+
+slug: banking-utility-loader-with-exception-handling
+
+
+Got it 👍 — since you haven’t covered **SQL** or **files** yet, let’s keep the checked exception challenge **very simple** and still industry‑relevant. A great candidate is **ClassNotFoundException**, which is a checked exception that occurs when trying to load a class dynamically. It doesn’t require database or file knowledge, but it introduces trainees to the idea of checked exceptions.
+
+---
+
+# 🏦 HackerRank Challenge: Banking Utility Loader with Exception Handling
+
+### Problem Statement
+You are tasked with simulating a **Banking Utility Loader**.  
+The program should attempt to load a class dynamically using its name.  
+
+- If the class exists (e.g., `"java.util.Scanner"`), print `"Class loaded successfully"`.  
+- If the class does not exist, handle the **checked exception (`ClassNotFoundException`)** and print `"Error: Class not found"`.  
+
+Your program must demonstrate:  
+- **Checked Exception Handling** using `try`–`catch`.  
+- Handling `ClassNotFoundException` when an invalid class name is given.  
+
+---
+
+### Input Format
+- A single line containing the class name (string).  
+
+---
+
+### Output Format
+- If the class exists: `"Class loaded successfully"`  
+- Otherwise: `"Error: Class not found"`  
+
+---
+
+### Constraints
+- Class name length ≤ 50 characters.  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+java.util.Scanner
+```
+
+**Output**
+```
+Class loaded successfully
+```
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+banking.Utility
+```
+
+**Output**
+```
+Error: Class not found
+```
+
+---
+
+### Sample Test Case 3  
+**Input**
+```
+java.lang.String
+```
+
+**Output**
+```
+Class loaded successfully
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.Scanner;
+
+public class BankingUtilityLoader {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String className = sc.nextLine();
+
+        try {
+            Class.forName(className); // may throw ClassNotFoundException
+            System.out.println("Class loaded successfully");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error: Class not found");
+        }
+
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is **simple, beginner‑friendly, and industry‑relevant**. It teaches trainees:
+- What a **checked exception** is (`ClassNotFoundException`).  
+- How to declare and handle it with `try`–`catch`.  
+- How checked exceptions differ from runtime exceptions (they must be handled or declared).  
+
+Would you like me to also prepare a **Retail vertical version** (e.g., simulating a “Product Utility Loader”) so you can give them variety across industries?
+
+
+
+
+
+
+27/11/2025:
+slug: banking-withdrawal-with-onetime-retry-on-custom-exceptions
+
+
+
+slug: menudriven-generic-statistics-analyzer
+Perfect 👍 — let’s now **upgrade the Generic Statistics Analyzer challenge** into a **menu‑driven program**. This way, your trainees can interactively choose operations (instead of just one command at the end). It still uses **Generics, Interfaces, Arrays of Objects, and Methods**, but now with a **menu loop** that makes it more practical.
+
+---
+
+# 📊 HackerRank Challenge: Menu‑Driven Generic Statistics Analyzer
+
+### Problem Statement
+You are tasked with building a **Generic Statistics Analyzer** that works with different data types (Integer, Double, Long, String).  
+The program should allow storing values in an array and then perform **analysis operations** interactively through a menu.  
+
+Your program must demonstrate:  
+- **Generics** → class and interface should work with multiple data types.  
+- **Interface** → define methods for analysis operations.  
+- **Array of Objects** → store values in a generic array.  
+- **Menu‑Driven Approach** → repeatedly show options until the user chooses to exit.  
+
+---
+
+### Required Operations
+1. Save a value  
+2. Display all values  
+3. Find maximum value  
+4. Find minimum value  
+5. Count elements  
+6. Search for a value  
+7. Exit  
+
+---
+
+### Input Format
+- First line: Data type (`Integer`, `Double`, `Long`, `String`).  
+- Second line: Size of storage.  
+- Then menu options (integers 1–7) followed by required inputs.  
+
+---
+
+### Output Format
+- For each operation, print the result as specified.  
+- Continue showing the menu until the user chooses `7` (Exit).  
+
+---
+
+### Sample Test Case (Integer Example)  
+**Input**
+```
+Integer
+5
+1
+10
+1
+20
+1
+5
+2
+3
+4
+5
+6 20
+7
+```
+
+**Output**
+```
+10 Saved at index: 0
+20 Saved at index: 1
+5 Saved at index: 2
+[10, 20, 5, null, null]
+Maximum value: 20
+Minimum value: 5
+Total elements: 3
+Found
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+package dynamics;
+import java.util.Arrays;
+import java.util.Scanner;
+
+interface Analyzer<T> {
+    void save(T value);
+    void findAll();
+    T findMax();
+    T findMin();
+    int countElements();
+    boolean search(T value);
+}
+
+class Service<T extends Comparable<T>> implements Analyzer<T> {
+    private T[] storage;
+    private int index = 0;
+
+    @SuppressWarnings("unchecked")
+    public Service(int size) {
+        storage = (T[]) new Comparable[size];
+    }
+
+    @Override
+    public void save(T value) {
+        if(index < storage.length) {
+            storage[index++] = value;
+            System.out.println(value + " Saved at index: " + (index-1));
+        } else {
+            System.out.println("Storage is full, cannot save " + value);
+        }
+    }
+
+    @Override
+    public void findAll() {
+        System.out.println(Arrays.toString(storage));
+    }
+
+    @Override
+    public T findMax() {
+        T max = null;
+        for(T val : storage) {
+            if(val != null) {
+                if(max == null || val.compareTo(max) > 0) {
+                    max = val;
+                }
+            }
+        }
+        return max;
+    }
+
+    @Override
+    public T findMin() {
+        T min = null;
+        for(T val : storage) {
+            if(val != null) {
+                if(min == null || val.compareTo(min) < 0) {
+                    min = val;
+                }
+            }
+        }
+        return min;
+    }
+
+    @Override
+    public int countElements() {
+        int count = 0;
+        for(T val : storage) {
+            if(val != null) count++;
+        }
+        return count;
+    }
+
+    @Override
+    public boolean search(T value) {
+        for(T val : storage) {
+            if(value.equals(val)) return true;
+        }
+        return false;
+    }
+}
+
+public class StatisticsChallenge {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String type = sc.nextLine();
+        int size = sc.nextInt();
+
+        if(type.equals("Integer")) {
+            Service<Integer> service = new Service<>(size);
+            runMenu(sc, service);
+        } else if(type.equals("Double")) {
+            Service<Double> service = new Service<>(size);
+            runMenu(sc, service);
+        } else if(type.equals("Long")) {
+            Service<Long> service = new Service<>(size);
+            runMenu(sc, service);
+        } else if(type.equals("String")) {
+            Service<String> service = new Service<>(size);
+            runMenu(sc, service);
+        }
+        sc.close();
+    }
+
+    private static <T extends Comparable<T>> void runMenu(Scanner sc, Service<T> service) {
+        int choice;
+        do {
+            System.out.println("Menu:");
+            System.out.println("1. Save");
+            System.out.println("2. Display All");
+            System.out.println("3. Find Max");
+            System.out.println("4. Find Min");
+            System.out.println("5. Count Elements");
+            System.out.println("6. Search");
+            System.out.println("7. Exit");
+            choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            switch(choice) {
+                case 1:
+                    System.out.println("Enter value:");
+                    String val = sc.nextLine();
+                    service.save((T) convert(val, service));
+                    break;
+                case 2:
+                    service.findAll();
+                    break;
+                case 3:
+                    System.out.println("Maximum value: " + service.findMax());
+                    break;
+                case 4:
+                    System.out.println("Minimum value: " + service.findMin());
+                    break;
+                case 5:
+                    System.out.println("Total elements: " + service.countElements());
+                    break;
+                case 6:
+                    System.out.println("Enter value to search:");
+                    String searchVal = sc.nextLine();
+                    boolean found = service.search((T) convert(searchVal, service));
+                    System.out.println(found ? "Found" : "Not Found");
+                    break;
+                case 7:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
+        } while(choice != 7);
+    }
+
+    // Helper to convert string input to correct type
+    private static <T extends Comparable<T>> Object convert(String val, Service<T> service) {
+        if(service instanceof Service<Integer>) return Integer.parseInt(val);
+        if(service instanceof Service<Double>) return Double.parseDouble(val);
+        if(service instanceof Service<Long>) return Long.parseLong(val);
+        return val; // String
+    }
+}
+```
+
+---
+
+✨ This version is **menu‑driven**, interactive, and still uses **Generics, Interfaces, Arrays, and Methods**. It’s a natural next step after CRUD, giving trainees practice with **user interaction and control flow**.  
+
+Would you like me to also prepare a **Hospital vertical menu‑driven challenge** (e.g., patient record analyzer) so your trainees can practice the same structure in a different domain?
+
+
+
+
+
+
+28/11/2025
+
+slug: doctor-record-sorting-with-comparators
+Perfect 👍 — let’s reframe the **Comparator sorting challenge** into a **health vertical with doctors**. This keeps the same concepts (custom comparators, sorting with `Collections.sort`) but applies them to **doctor records**.
+
+---
+
+# 🏥 HackerRank Challenge: Doctor Record Sorting with Comparators
+
+### Problem Statement
+You are tasked with building a **Doctor Record Management System** for a hospital.  
+Each doctor has:  
+- `name` (String)  
+- `expertise` (String, e.g., Cardio, Ortho, Gyno, Gastro)  
+- `experience` (Integer, in years)  
+- `consultingTime` (Integer, in minutes per patient)  
+- `qualification` (String, e.g., MBBS, MD, MS)  
+
+You must implement comparators to sort doctors by:  
+1. **Expertise Descending** (lexicographically reverse order of expertise)  
+2. **Consulting Time Ascending** (shortest consulting time first)  
+3. **Experience Descending** (most experienced first)  
+
+---
+
+### Input Format
+- First line: Number of doctors `n`.  
+- Next `n` lines: Each line contains `name expertise experience consultingTime qualification`.  
+- Final line: Sorting choice (`expertise`, `consulting`, or `experience`).  
+
+---
+
+### Output Format
+- Print the sorted list of doctors, one per line, in the format:  
+  ```
+  name - expertise - experience years - consultingTime mins - qualification
+  ```
+
+---
+
+### Constraints
+- 1 ≤ n ≤ 50  
+- Expertise: one of {Cardio, Ortho, Gyno, Gastro}  
+- Experience: 1 ≤ years ≤ 50  
+- Consulting Time: 5 ≤ minutes ≤ 60  
+- Qualification length ≤ 20 characters  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+3
+Arun Cardio 15 20 MD
+Bala Ortho 10 30 MS
+Chitra Gyno 20 25 MBBS
+experience
+```
+
+**Output**
+```
+Chitra - Gyno - 20 years - 25 mins - MBBS
+Arun - Cardio - 15 years - 20 mins - MD
+Bala - Ortho - 10 years - 30 mins - MS
+```
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+3
+Arun Cardio 15 20 MD
+Bala Ortho 10 30 MS
+Chitra Gyno 20 25 MBBS
+consulting
+```
+
+**Output**
+```
+Arun - Cardio - 15 years - 20 mins - MD
+Chitra - Gyno - 20 years - 25 mins - MBBS
+Bala - Ortho - 10 years - 30 mins - MS
+```
+
+---
+
+### Sample Test Case 3  
+**Input**
+```
+3
+Arun Cardio 15 20 MD
+Bala Ortho 10 30 MS
+Chitra Gyno 20 25 MBBS
+expertise
+```
+
+**Output**
+```
+Chitra - Gyno - 20 years - 25 mins - MBBS
+Bala - Ortho - 10 years - 30 mins - MS
+Arun - Cardio - 15 years - 20 mins - MD
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+class Doctor {
+    private String name;
+    private String expertise;
+    private int experience;
+    private int consultingTime;
+    private String qualification;
+
+    public Doctor(String name, String expertise, int experience, int consultingTime, String qualification) {
+        this.name = name;
+        this.expertise = expertise;
+        this.experience = experience;
+        this.consultingTime = consultingTime;
+        this.qualification = qualification;
+    }
+
+    public String getName() { return name; }
+    public String getExpertise() { return expertise; }
+    public int getExperience() { return experience; }
+    public int getConsultingTime() { return consultingTime; }
+    public String getQualification() { return qualification; }
+
+    @Override
+    public String toString() {
+        return name + " - " + expertise + " - " + experience + " years - " 
+               + consultingTime + " mins - " + qualification;
+    }
+}
+
+// Comparator for expertise descending
+class ExpertiseDescending implements Comparator<Doctor> {
+    @Override
+    public int compare(Doctor d1, Doctor d2) {
+        return d2.getExpertise().compareTo(d1.getExpertise());
+    }
+}
+
+// Comparator for consulting time ascending
+class ConsultingTimeAscending implements Comparator<Doctor> {
+    @Override
+    public int compare(Doctor d1, Doctor d2) {
+        return Integer.compare(d1.getConsultingTime(), d2.getConsultingTime());
+    }
+}
+
+// Comparator for experience descending
+class ExperienceDescending implements Comparator<Doctor> {
+    @Override
+    public int compare(Doctor d1, Doctor d2) {
+        return Integer.compare(d2.getExperience(), d1.getExperience());
+    }
+}
+
+public class DoctorSorting {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        List<Doctor> doctors = new ArrayList<>();
+        for(int i=0; i<n; i++) {
+            String name = sc.next();
+            String expertise = sc.next();
+            int experience = sc.nextInt();
+            int consultingTime = sc.nextInt();
+            String qualification = sc.next();
+            doctors.add(new Doctor(name, expertise, experience, consultingTime, qualification));
+        }
+        String choice = sc.next();
+
+        if(choice.equals("expertise")) {
+            Collections.sort(doctors, new ExpertiseDescending());
+        } else if(choice.equals("consulting")) {
+            Collections.sort(doctors, new ConsultingTimeAscending());
+        } else if(choice.equals("experience")) {
+            Collections.sort(doctors, new ExperienceDescending());
+        }
+
+        for(Doctor d : doctors) {
+            System.out.println(d);
+        }
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is **health‑related**, uses **Comparator sorting**, and gives trainees practice with:  
+- Multiple attributes (`name`, `expertise`, `experience`, `consultingTime`, `qualification`).  
+- Writing **three comparator classes**.  
+- Applying `Collections.sort()` with different comparators.  
+
+Would you like me to also extend this into a **menu‑driven version** where the user can repeatedly choose sorting criteria until exit?
+
+
+
+
+
+
+slug: patient-management-with-hashmap
+
+contest: www.hackerrank.com/java-foundation-collection-framework
+Perfect 👍 — let’s now design the **Hospital vertical HashMap CRUD challenge** in HackerRank format. This mirrors the **Library CRUD** you saw earlier, but adapted to **patient records**.
+
+---
+
+# 🏥 HackerRank Challenge: Patient Management with HashMap
+
+### Problem Statement
+You are tasked with building a **Patient Management System** using Java’s `HashMap`.  
+Each patient has:  
+- `id` (Integer, unique key)  
+- `name` (String, value)  
+
+You must implement CRUD operations:  
+1. **Create** → Add a new patient (id → name).  
+2. **Read** → Display all patients.  
+3. **Update** → Update the name of a patient by id.  
+4. **Delete** → Remove a patient by id.  
+
+---
+
+### Input Format
+- First line: Number of operations `n`.  
+- Next `n` lines: Each line contains an operation in one of the following formats:  
+  - `create id name`  
+  - `read`  
+  - `update id newName`  
+  - `delete id`  
+
+---
+
+### Output Format
+- For `create`: Print `"Patient added: id-name"`  
+- For `read`: Print all patients in the format `[id=name, id=name, ...]`  
+- For `update`: Print `"Patient updated: id-newName"`  
+- For `delete`: Print `"Patient deleted: id"`  
+- If an operation refers to a non‑existent id, print `"Invalid operation"`  
+
+---
+
+### Constraints
+- 1 ≤ n ≤ 50  
+- id is unique and positive  
+- name length ≤ 30 characters  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+5
+create 101 Arun
+create 102 Bala
+read
+update 101 Arunkumar
+delete 102
+```
+
+**Output**
+```
+Patient added: 101-Arun
+Patient added: 102-Bala
+[101=Arun, 102=Bala]
+Patient updated: 101-Arunkumar
+Patient deleted: 102
+```
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+4
+create 201 Chitra
+update 202 Priya
+delete 201
+read
+```
+
+**Output**
+```
+Patient added: 201-Chitra
+Invalid operation
+Patient deleted: 201
+[]
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+public class PatientCRUD {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        sc.nextLine(); // consume newline
+
+        Map<Integer, String> patients = new HashMap<>();
+
+        for(int i=0; i<n; i++) {
+            String[] parts = sc.nextLine().split(" ");
+            String operation = parts[0];
+
+            switch(operation) {
+                case "create":
+                    int id = Integer.parseInt(parts[1]);
+                    String name = parts[2];
+                    patients.put(id, name);
+                    System.out.println("Patient added: " + id + "-" + name);
+                    break;
+
+                case "read":
+                    System.out.println(patients);
+                    break;
+
+                case "update":
+                    id = Integer.parseInt(parts[1]);
+                    if(patients.containsKey(id)) {
+                        String newName = parts[2];
+                        patients.put(id, newName);
+                        System.out.println("Patient updated: " + id + "-" + newName);
+                    } else {
+                        System.out.println("Invalid operation");
+                    }
+                    break;
+
+                case "delete":
+                    id = Integer.parseInt(parts[1]);
+                    if(patients.containsKey(id)) {
+                        patients.remove(id);
+                        System.out.println("Patient deleted: " + id);
+                    } else {
+                        System.out.println("Invalid operation");
+                    }
+                    break;
+
+                default:
+                    System.out.println("Invalid operation");
+            }
+        }
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This hospital‑based challenge teaches trainees:  
+- How to use `HashMap` for CRUD.  
+- How to handle invalid operations gracefully.  
+- How to adapt the same logic across different verticals.  
+
+Would you like me to also prepare a **Retail vertical version** (e.g., managing product inventory with HashMap) so your trainees can practice CRUD in yet another domain?
+
+
+
+Slug: find-second-largest-values-position-via-binary-search
+
+
+
+Perfect 👍 — thanks for clarifying. Since the input list is already **sorted**, we don’t need to sort again. The challenge is now simply:  
+
+- Identify the **second largest value** in the sorted list.  
+- Use **binary search** to locate it.  
+- Return its **index in the original sorted list**.  
+
+---
+
+# 🔍 HackerRank Challenge: Find Second Largest Value’s Position (Sorted Input, Binary Search)
+
+### Problem Statement
+You are given a **sorted list of numbers** (ascending order).  
+Your task is to:  
+1. Find the **second largest value** in the list.  
+2. Use **binary search** to locate its position.  
+3. Print the index (0‑based) of the second largest value.  
+4. If all values are equal, print `-1`.  
+
+---
+
+### Input Format
+- First line: Integer `n` (number of elements).  
+- Second line: `n` space‑separated sorted numbers (ascending).  
+
+---
+
+### Output Format
+- Print the index (0‑based) of the second largest value.  
+- If no distinct second largest exists, print `-1`.  
+
+---
+
+### Constraints
+- 2 ≤ n ≤ 1000  
+- Values can be integers or doubles  
+- Input list is guaranteed to be sorted ascending  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+10
+1.55 1.8 3.5 5.2 7.5 8.9 9.2 10.5 19.5 21.5
+```
+
+**Output**
+```
+8
+```
+
+**Explanation**  
+- Largest = `21.5` at index `9`  
+- Second largest = `19.5` at index `8`  
+- Output = `8`  
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+5
+10 10 10 10 10
+```
+
+**Output**
+```
+-1
+```
+
+**Explanation**  
+All values are equal → no distinct second largest.  
+
+---
+
+### Sample Test Case 3  
+**Input**
+```
+6
+2 4 6 8 10 12
+```
+
+**Output**
+```
+4
+```
+
+**Explanation**  
+- Largest = `12` at index `5`  
+- Second largest = `10` at index `4`  
+- Output = `4`  
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+public class SecondLargestBinarySearch {
+    // Binary search to find target in sorted list
+    public static int binarySearch(List<Double> list, double target) {
+        int left = 0, right = list.size() - 1;
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            if(list.get(mid) == target) {
+                return mid; // found
+            } else if(list.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return -1; // not found
+    }
+
+    public static int findSecondLargestPosition(List<Double> list) {
+        int n = list.size();
+        double largest = list.get(n - 1);
+        double secondLargest = Double.MIN_VALUE;
+
+        // Traverse backwards to find distinct second largest
+        for(int i = n - 2; i >= 0; i--) {
+            if(list.get(i) < largest) {
+                secondLargest = list.get(i);
+                break;
+            }
+        }
+
+        if(secondLargest == Double.MIN_VALUE) return -1;
+
+        // Binary search for second largest
+        return binarySearch(list, secondLargest);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        List<Double> list = new ArrayList<>();
+        for(int i=0; i<n; i++) {
+            list.add(sc.nextDouble());
+        }
+        int result = findSecondLargestPosition(list);
+        System.out.println(result);
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge now directly matches your requirement:  
+- Input is **already sorted**.  
+- Find **second largest**.  
+- Use **binary search** to locate its index.  
+
+Would you like me to also prepare a **variation** where trainees must find the **second smallest value’s position** using binary search, so they practice both ends of the sorted list?
+
+Slug: vehicle-queue-rotation-system
+
+Perfect 👍 — let’s design a **HackerRank‑style challenge** where trainees practice **rotating a single‑dimensional array clockwise and anti‑clockwise**. To make it engaging, we’ll wrap it in an **industry vertical use case**.
+
+---
+
+# 🚗 HackerRank Challenge: Vehicle Queue Rotation System
+
+### Problem Statement
+You are tasked with simulating a **vehicle queue rotation system** at a toll plaza. Vehicles are represented by their **registration numbers** stored in a single‑dimensional array.  
+
+- A **clockwise rotation** simulates moving the last vehicle to the front of the queue.  
+- An **anti‑clockwise rotation** simulates moving the first vehicle to the end of the queue.  
+
+Your program must:  
+1. Read the list of vehicles.  
+2. Perform the rotation based on user choice (`clockwise` or `anticlockwise`).  
+3. Print the updated queue.  
+
+---
+
+### Input Format
+- First line: Integer `n` (number of vehicles).  
+- Second line: `n` space‑separated vehicle registration numbers (strings).  
+- Third line: Rotation choice (`clockwise` or `anticlockwise`).  
+- Fourth line: Integer `k` (number of rotations).  
+
+---
+
+### Output Format
+- Print the updated queue after performing the rotations.  
+
+---
+
+### Constraints
+- 1 ≤ n ≤ 100  
+- Vehicle registration numbers are alphanumeric strings (length ≤ 15).  
+- 1 ≤ k ≤ 1000  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+5
+TN01AA1234 TN02BB5678 TN03CC9999 TN04DD4321 TN05EE8888
+clockwise
+2
+```
+
+**Output**
+```
+TN04DD4321 TN05EE8888 TN01AA1234 TN02BB5678 TN03CC9999
+```
+
+**Explanation**  
+- Initial queue: `[TN01AA1234, TN02BB5678, TN03CC9999, TN04DD4321, TN05EE8888]`  
+- After 1 clockwise rotation: `[TN05EE8888, TN01AA1234, TN02BB5678, TN03CC9999, TN04DD4321]`  
+- After 2 clockwise rotations: `[TN04DD4321, TN05EE8888, TN01AA1234, TN02BB5678, TN03CC9999]`  
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+4
+KA01XY1111 KA02YZ2222 KA03PQ3333 KA04RS4444
+anticlockwise
+1
+```
+
+**Output**
+```
+KA02YZ2222 KA03PQ3333 KA04RS4444 KA01XY1111
+```
+
+**Explanation**  
+- Initial queue: `[KA01XY1111, KA02YZ2222, KA03PQ3333, KA04RS4444]`  
+- After 1 anti‑clockwise rotation: `[KA02YZ2222, KA03PQ3333, KA04RS4444, KA01XY1111]`  
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+public class VehicleQueueRotation {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        String[] vehicles = new String[n];
+        for(int i=0; i<n; i++) {
+            vehicles[i] = sc.next();
+        }
+        String choice = sc.next();
+        int k = sc.nextInt();
+        sc.close();
+
+        // Normalize rotations
+        k = k % n;
+
+        if(choice.equals("clockwise")) {
+            vehicles = rotateClockwise(vehicles, k);
+        } else if(choice.equals("anticlockwise")) {
+            vehicles = rotateAntiClockwise(vehicles, k);
+        }
+
+        for(String v : vehicles) {
+            System.out.print(v + " ");
+        }
+    }
+
+    public static String[] rotateClockwise(String[] arr, int k) {
+        int n = arr.length;
+        String[] rotated = new String[n];
+        for(int i=0; i<n; i++) {
+            rotated[(i+k)%n] = arr[i];
+        }
+        return rotated;
+    }
+
+    public static String[] rotateAntiClockwise(String[] arr, int k) {
+        int n = arr.length;
+        String[] rotated = new String[n];
+        for(int i=0; i<n; i++) {
+            rotated[i] = arr[(i+k)%n];
+        }
+        return rotated;
+    }
+}
+```
+
+---
+
+✨ This challenge teaches trainees:  
+- Array manipulation (rotation logic).  
+- Handling both **clockwise** and **anti‑clockwise** rotations.  
+- Wrapping the algorithm in a **real‑world industry vertical** (vehicle queue at toll plaza).  
+
+Would you like me to also prepare a **healthcare vertical version** (e.g., rotating patient appointment slots) so trainees can see the same concept applied in another domain?
+
+
+
+
+
+
+Slug: first-nonrepeating-character-in-a-stream
+Contest slug: https://www.hackerrank.com/java-dsa-queue
+
+Perfect 👍 — let’s wrap the **First Non‑Repeating Character in a Stream** problem into a **HackerRank‑style challenge** so your trainees can practice it directly.
+
+---
+
+# 🔤 HackerRank Challenge: First Non‑Repeating Character in a Stream
+
+### Problem Statement  
+You are given a stream of characters (string).  
+At each step, you must find the **first non‑repeating character** among all characters seen so far.  
+If no such character exists, output `#`.  
+
+Use a **stack/queue + hashmap approach** to solve this efficiently.
+
+---
+
+### Input Format  
+- A single line containing the string `stream`.  
+
+---
+
+### Output Format  
+- Print the sequence of first non‑repeating characters after each step, separated by spaces.  
+
+---
+
+### Constraints  
+- 1 ≤ length(stream) ≤ 1000  
+- Stream contains only lowercase English letters (`a`–`z`).  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+aabc
+```
+
+**Output**
+```
+a a b #
+```
+
+**Explanation**  
+- After `a`: first non‑repeating = `a`  
+- After `aa`: still `a`  
+- After `aab`: now `b`  
+- After `aabc`: all repeated → `#`  
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+xyzxy
+```
+
+**Output**
+```
+x x x y z
+```
+
+**Explanation**  
+- After `x`: first non‑repeating = `x`  
+- After `xy`: still `x`  
+- After `xyz`: still `x`  
+- After `xyzx`: now `y`  
+- After `xyzxy`: now `z`  
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+public class FirstNonRepeatingChar {
+    public static List<Character> firstNonRepeatingChar(String stream) {
+        Map<Character, Integer> charCount = new HashMap<>();
+        Queue<Character> queue = new LinkedList<>();
+        List<Character> result = new ArrayList<>();
+
+        for (char ch : stream.toCharArray()) {
+            // update frequency
+            charCount.put(ch, charCount.getOrDefault(ch, 0) + 1);
+            queue.add(ch);
+
+            // remove repeated chars from front of queue
+            while (!queue.isEmpty() && charCount.get(queue.peek()) > 1) {
+                queue.poll();
+            }
+
+            // append current first non-repeating or '#' if none
+            if (!queue.isEmpty()) {
+                result.add(queue.peek());
+            } else {
+                result.add('#');
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String stream = sc.nextLine();
+        List<Character> output = firstNonRepeatingChar(stream);
+        for (char c : output) {
+            System.out.print(c + " ");
+        }
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is **simple but powerful**:  
+- It teaches **queue + hashmap** usage.  
+- It reinforces **stream processing**.  
+- It gives trainees a **classic interview‑style problem** in HackerRank format.  
+
+Would you like me to also prepare a **slightly harder variant** (e.g., *First Non‑Repeating Character in a sliding window of size k*) so they can extend their stack/queue skills further?
+
+
+
+
+
+Slug: implement-queue-using-array-2-2
+Perfect 👍 — let’s design a **HackerRank‑style challenge** where trainees must **implement a Queue using an array** and perform its operations via a **menu‑driven program**.
+
+---
+
+# 📥 HackerRank Challenge: Implement Queue using Array (Menu Driven)
+
+### Problem Statement  
+You are tasked with implementing a **Queue data structure** using an **array**.  
+The queue should support the following operations via a **menu‑driven program**:  
+1. **enqueue X** → Insert element `X` into the queue.  
+2. **dequeue** → Remove the front element from the queue. If the queue is empty, print `"Queue Underflow"`.  
+3. **peek** → Print the front element of the queue. If the queue is empty, print `"Queue is empty"`.  
+4. **display** → Print all elements of the queue from front to rear. If the queue is empty, print `"Queue is empty"`.  
+5. **exit** → Terminate the program.  
+
+---
+
+### Input Format  
+- First line: Integer `n` (maximum size of the queue).  
+- Next lines: Menu‑driven commands (`enqueue X`, `dequeue`, `peek`, `display`, `exit`).  
+
+---
+
+### Output Format  
+- For `enqueue`: Print `"Enqueued X"`  
+- For `dequeue`: Print `"Dequeued X"` or `"Queue Underflow"`  
+- For `peek`: Print the front element or `"Queue is empty"`  
+- For `display`: Print all elements from front to rear separated by space, or `"Queue is empty"`  
+
+---
+
+### Constraints  
+- 1 ≤ n ≤ 50  
+- Elements are integers  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+5
+enqueue 10
+enqueue 20
+enqueue 30
+peek
+dequeue
+display
+exit
+```
+
+**Output**
+```
+Enqueued 10
+Enqueued 20
+Enqueued 30
+10
+Dequeued 10
+20 30
+```
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+3
+dequeue
+enqueue 5
+enqueue 15
+enqueue 25
+enqueue 35
+display
+exit
+```
+
+**Output**
+```
+Queue Underflow
+Enqueued 5
+Enqueued 15
+Enqueued 25
+Queue Overflow
+5 15 25
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+class QueueArray {
+    private int[] queue;
+    private int front, rear, capacity;
+
+    public QueueArray(int size) {
+        capacity = size;
+        queue = new int[capacity];
+        front = 0;
+        rear = -1;
+    }
+
+    public void enqueue(int x) {
+        if(rear == capacity - 1) {
+            System.out.println("Queue Overflow");
+            return;
+        }
+        queue[++rear] = x;
+        System.out.println("Enqueued " + x);
+    }
+
+    public void dequeue() {
+        if(front > rear) {
+            System.out.println("Queue Underflow");
+            return;
+        }
+        System.out.println("Dequeued " + queue[front++]);
+    }
+
+    public void peek() {
+        if(front > rear) {
+            System.out.println("Queue is empty");
+            return;
+        }
+        System.out.println(queue[front]);
+    }
+
+    public void display() {
+        if(front > rear) {
+            System.out.println("Queue is empty");
+            return;
+        }
+        for(int i = front; i <= rear; i++) {
+            System.out.print(queue[i] + (i == rear ? "" : " "));
+        }
+        System.out.println();
+    }
+}
+
+public class QueueChallenge {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int size = sc.nextInt();
+        sc.nextLine(); // consume newline
+        QueueArray q = new QueueArray(size);
+
+        while(true) {
+            String input = sc.nextLine();
+            String[] parts = input.split(" ");
+            switch(parts[0]) {
+                case "enqueue":
+                    q.enqueue(Integer.parseInt(parts[1]));
+                    break;
+                case "dequeue":
+                    q.dequeue();
+                    break;
+                case "peek":
+                    q.peek();
+                    break;
+                case "display":
+                    q.display();
+                    break;
+                case "exit":
+                    return;
+                default:
+                    System.out.println("Invalid operation");
+            }
+        }
+    }
+}
+```
+
+---
+
+✨ This challenge is **simple, menu‑driven, and practical**. It teaches trainees:  
+- How to implement a **queue using arrays**.  
+- How to handle **overflow** and **underflow** conditions.  
+- How to build a **menu‑driven program** that simulates real‑world queue operations.  
+
+Would you like me to also prepare a **Circular Queue version** of this challenge (to avoid wasted space after dequeues), so they can see the next level of queue implementation?
+
+
+
+
+Slug: maximum-element-using-ternary-partitioning
+Contest Slug: https://www.hackerrank.com/java-ece-search
+
+Perfect clarification 👍 — you don’t want me to keep generating only *search‑based* HackerRank challenges. You want me to take the **ternary partitioning logic** (splitting into three parts) and apply it to **other problems like sum, max, min**. That way trainees see how ternary partitioning can be used beyond searching.
+
+Here are **three HackerRank‑style challenges** inspired by your ternary partitioning code:
+
+---
+
+# ➗ Challenge 1: Sum of Array using Ternary Partitioning
+
+### Problem Statement  
+You are given an array of integers.  
+Implement a recursive algorithm that **splits the array into three parts** (using two midpoints) and computes the **sum of all elements**.
+
+---
+
+### Input Format  
+- First line: Integer `n` (number of elements).  
+- Second line: `n` space‑separated integers.  
+
+### Output Format  
+- Print the sum of all elements.  
+
+---
+
+### Sample Input  
+```
+6
+5 10 15 20 25 30
+```
+
+### Sample Output  
+```
+105
+```
+
+---
+
+# 🔼 Challenge 2: Maximum Element using Ternary Partitioning
+
+### Problem Statement  
+You are given an array of integers.  
+Implement a recursive algorithm that **splits the array into three parts** and finds the **maximum element**.
+
+---
+
+### Input Format  
+- First line: Integer `n` (number of elements).  
+- Second line: `n` space‑separated integers.  
+
+### Output Format  
+- Print the maximum element.  
+
+---
+
+### Sample Input  
+```
+7
+12 45 23 67 34 89 10
+```
+
+### Sample Output  
+```
+89
+```
+
+---
+
+# 🔽 Challenge 3: Minimum Element using Ternary Partitioning
+
+### Problem Statement  
+You are given an array of integers.  
+Implement a recursive algorithm that **splits the array into three parts** and finds the **minimum element**.
+
+---
+
+### Input Format  
+- First line: Integer `n` (number of elements).  
+- Second line: `n` space‑separated integers.  
+
+### Output Format  
+- Print the minimum element.  
+
+---
+
+### Sample Input  
+```
+5
+100 50 200 25 75
+```
+
+### Sample Output  
+```
+25
+```
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+public class TernaryPartitionOps {
+
+    // Sum using ternary partitioning
+    public static int sumArray(int[] arr, int start, int end) {
+        if(start == end) return arr[start];
+        if(start > end) return 0;
+
+        int midOne = start + (end - start) / 3;
+        int midTwo = end - (end - start) / 3;
+
+        int leftSum = sumArray(arr, start, midOne);
+        int midSum = sumArray(arr, midOne+1, midTwo);
+        int rightSum = sumArray(arr, midTwo+1, end);
+
+        return leftSum + midSum + rightSum;
+    }
+
+    // Max using ternary partitioning
+    public static int maxArray(int[] arr, int start, int end) {
+        if(start == end) return arr[start];
+        if(start > end) return Integer.MIN_VALUE;
+
+        int midOne = start + (end - start) / 3;
+        int midTwo = end - (end - start) / 3;
+
+        int leftMax = maxArray(arr, start, midOne);
+        int midMax = maxArray(arr, midOne+1, midTwo);
+        int rightMax = maxArray(arr, midTwo+1, end);
+
+        return Math.max(leftMax, Math.max(midMax, rightMax));
+    }
+
+    // Min using ternary partitioning
+    public static int minArray(int[] arr, int start, int end) {
+        if(start == end) return arr[start];
+        if(start > end) return Integer.MAX_VALUE;
+
+        int midOne = start + (end - start) / 3;
+        int midTwo = end - (end - start) / 3;
+
+        int leftMin = minArray(arr, start, midOne);
+        int midMin = minArray(arr, midOne+1, midTwo);
+        int rightMin = minArray(arr, midTwo+1, end);
+
+        return Math.min(leftMin, Math.min(midMin, rightMin));
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        for(int i=0; i<n; i++) arr[i] = sc.nextInt();
+
+        System.out.println(sumArray(arr, 0, n-1));
+        System.out.println(maxArray(arr, 0, n-1));
+        System.out.println(minArray(arr, 0, n-1));
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ These challenges show trainees how **ternary partitioning** can be applied to **aggregation problems** (sum, max, min), not just searching. They reinforce recursion and divide‑and‑conquer thinking in a fresh way.
+
+Would you like me to also prepare a **“ternary partitioning for finding the median”** challenge? That would be a nice next step beyond sum/max/min.
+
+
+
+
+
+Slug: find-pivot-index-6-3
+
+Perfect 👍 — let’s turn your **`find_pivot_index`** function into a **complete HackerRank‑style coding challenge**.  
+
+---
+
+# ⚖️ HackerRank Challenge: Find Pivot Index
+
+### Problem Statement  
+You are given an array of integers.  
+A **pivot index** is defined as the index where the **sum of all elements to the left** equals the **sum of all elements to the right**.  
+
+Your task is to find the **first pivot index** if it exists.  
+- If multiple pivot indices exist, return the **leftmost one**.  
+- If no pivot index exists, return `-1`.  
+
+---
+
+### Input Format  
+- First line: Integer `n` (number of elements).  
+- Second line: `n` space‑separated integers.  
+
+---
+
+### Output Format  
+- Print the pivot index if it exists, otherwise print `-1`.  
+
+---
+
+### Constraints  
+- 1 ≤ n ≤ 1000  
+- −10^5 ≤ nums[i] ≤ 10^5  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+6
+1 7 3 6 5 6
+```
+
+**Output**
+```
+3
+```
+
+**Explanation**  
+At index `3` (value `6`):  
+- Left sum = `1+7+3 = 11`  
+- Right sum = `5+6 = 11`  
+So pivot index = `3`.
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+3
+2 1 -1
+```
+
+**Output**
+```
+0
+```
+
+**Explanation**  
+At index `0` (value `2`):  
+- Left sum = `0`  
+- Right sum = `1 + (-1) = 0`  
+So pivot index = `0`.
+
+---
+
+### Sample Test Case 3  
+**Input**
+```
+4
+1 2 3 4
+```
+
+**Output**
+```
+-1
+```
+
+**Explanation**  
+No index satisfies the condition.  
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+public class PivotIndexChallenge {
+
+    public static int findPivotIndex(int[] nums) {
+        int totalSum = 0;
+        for(int num : nums) totalSum += num;
+
+        int leftSum = 0;
+        for(int i=0; i<nums.length; i++) {
+            if(leftSum == totalSum - leftSum - nums[i]) {
+                return i;
+            }
+            leftSum += nums[i];
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] nums = new int[n];
+        for(int i=0; i<n; i++) {
+            nums[i] = sc.nextInt();
+        }
+        System.out.println(findPivotIndex(nums));
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is **simple but conceptually rich**:  
+- It teaches prefix sums and balancing logic.  
+- It reinforces iteration and condition checking.  
+- It’s a classic interview‑style problem, now in HackerRank format.  
+
+Would you like me to also prepare a **variant challenge** (e.g., *find all pivot indices* instead of just the first one) so trainees can extend their solution?
