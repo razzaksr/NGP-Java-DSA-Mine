@@ -2640,3 +2640,351 @@ public class PivotIndexChallenge {
 - It’s a classic interview‑style problem, now in HackerRank format.  
 
 Would you like me to also prepare a **variant challenge** (e.g., *find all pivot indices* instead of just the first one) so trainees can extend their solution?
+
+
+
+
+
+
+Slug: validate-binary-search-tree-7-2
+Contest Slug: https://www.hackerrank.com/java-dsa-tree
+
+Perfect 👍 — let’s design a **complete HackerRank‑style challenge** for validating whether a given binary tree is a **valid Binary Search Tree (BST)**.
+
+---
+
+# 🌳 HackerRank Challenge: Validate Binary Search Tree
+
+### Problem Statement  
+You are given the root of a binary tree.  
+Your task is to determine whether the tree is a **valid Binary Search Tree (BST)**.  
+
+A valid BST is defined as:  
+- The left subtree of a node contains only nodes with keys **less than** the node’s key.  
+- The right subtree of a node contains only nodes with keys **greater than** the node’s key.  
+- Both the left and right subtrees must also be valid BSTs.  
+
+---
+
+### Input Format  
+- First line: Integer `n` (number of nodes).  
+- Next `n` lines: Each line contains three values:  
+  ```
+  node_value left_child_index right_child_index
+  ```  
+  where `left_child_index` and `right_child_index` are indices of the child nodes (or `-1` if no child).  
+- The root of the tree is always at index `0`.  
+
+---
+
+### Output Format  
+- Print `"Valid BST"` if the tree is a valid BST.  
+- Print `"Invalid BST"` otherwise.  
+
+---
+
+### Constraints  
+- 1 ≤ n ≤ 1000  
+- −10^5 ≤ node_value ≤ 10^5  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+3
+2 1 2
+1 -1 -1
+3 -1 -1
+```
+
+**Output**
+```
+Valid BST
+```
+
+**Explanation**  
+Tree structure:  
+```
+    2
+   / \
+  1   3
+```
+This satisfies BST properties.
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+3
+5 1 2
+1 -1 -1
+4 -1 -1
+```
+
+**Output**
+```
+Invalid BST
+```
+
+**Explanation**  
+Tree structure:  
+```
+    5
+   / \
+  1   4
+```
+Right child `4` is less than root `5`, violating BST property.
+
+---
+
+### Sample Test Case 3  
+**Input**
+```
+5
+10 1 2
+5 -1 -1
+15 3 4
+6 -1 -1
+20 -1 -1
+```
+
+**Output**
+```
+Valid BST
+```
+
+**Explanation**  
+Tree structure:  
+```
+       10
+      /  \
+     5    15
+         /  \
+        6    20
+```
+All nodes satisfy BST rules.
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+class Node {
+    int val;
+    int left;
+    int right;
+    Node(int val, int left, int right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class ValidateBST {
+
+    public static boolean isValidBST(Node[] nodes, int index, long min, long max) {
+        if(index == -1) return true;
+        Node node = nodes[index];
+        if(node.val <= min || node.val >= max) return false;
+        return isValidBST(nodes, node.left, min, node.val) &&
+               isValidBST(nodes, node.right, node.val, max);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Node[] nodes = new Node[n];
+        for(int i=0; i<n; i++) {
+            int val = sc.nextInt();
+            int left = sc.nextInt();
+            int right = sc.nextInt();
+            nodes[i] = new Node(val, left, right);
+        }
+        boolean result = isValidBST(nodes, 0, Long.MIN_VALUE, Long.MAX_VALUE);
+        System.out.println(result ? "Valid BST" : "Invalid BST");
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is **complete HackerRank format**:  
+- Clear **problem statement**.  
+- Defined **input/output format**.  
+- **Constraints**.  
+- Multiple **sample test cases**.  
+- A **Java skeleton code** for trainees to implement.  
+
+Would you like me to also prepare a **variant challenge** (e.g., *check if a binary tree is height‑balanced*) so trainees can practice another validation problem in the same style?
+
+
+Slug: construct-tree-from-inorder-traversal
+Perfect 👍 — let’s design a **complete HackerRank‑style challenge** where trainees are asked to reconstruct a **Binary Search Tree (BST)** from its **inorder traversal output** and then identify its structure.
+
+---
+
+# 🌳 HackerRank Challenge: Construct Tree from Inorder Traversal
+
+### Problem Statement  
+You are given the **inorder traversal** of a Binary Search Tree (BST).  
+Your task is to reconstruct the BST and print its structure using **preorder traversal** (root → left → right).  
+
+- Recall:  
+  - Inorder traversal of a BST gives nodes in **sorted order**.  
+  - To reconstruct the BST uniquely, assume the tree is **height‑balanced** (like an AVL tree).  
+  - The middle element of the inorder list becomes the root, the left half forms the left subtree, and the right half forms the right subtree recursively.  
+
+---
+
+### Input Format  
+- First line: Integer `n` (number of nodes).  
+- Second line: `n` space‑separated integers representing the inorder traversal of the BST.  
+
+---
+
+### Output Format  
+- Print the **preorder traversal** of the reconstructed BST (space‑separated integers).  
+
+---
+
+### Constraints  
+- 1 ≤ n ≤ 1000  
+- −10^5 ≤ node_value ≤ 10^5  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+7
+1 2 3 4 5 6 7
+```
+
+**Output**
+```
+4 2 1 3 6 5 7
+```
+
+**Explanation**  
+- Inorder: `[1,2,3,4,5,6,7]`  
+- Middle = `4` → root.  
+- Left subtree = `[1,2,3]` → root `2`, children `1` and `3`.  
+- Right subtree = `[5,6,7]` → root `6`, children `5` and `7`.  
+- Preorder traversal = `4 2 1 3 6 5 7`.
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+5
+10 20 30 40 50
+```
+
+**Output**
+```
+30 20 10 40 50
+```
+
+**Explanation**  
+- Inorder: `[10,20,30,40,50]`  
+- Middle = `30` → root.  
+- Left subtree = `[10,20]` → root `20`, left child `10`.  
+- Right subtree = `[40,50]` → root `40`, right child `50`.  
+- Preorder traversal = `30 20 10 40 50`.
+
+---
+
+### Sample Test Case 3  
+**Input**
+```
+6
+2 4 6 8 10 12
+```
+
+**Output**
+```
+8 4 2 6 10 12
+```
+
+**Explanation**  
+- Inorder: `[2,4,6,8,10,12]`  
+- Middle = `8` → root.  
+- Left subtree = `[2,4,6]` → root `4`, children `2` and `6`.  
+- Right subtree = `[10,12]` → root `10`, right child `12`.  
+- Preorder traversal = `8 4 2 6 10 12`.
+
+---
+
+## 🧑‍💻 Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+class Node {
+    int val;
+    Node left, right;
+    Node(int val) {
+        this.val = val;
+        left = right = null;
+    }
+}
+
+public class InorderToBST {
+
+    // Build balanced BST from inorder traversal
+    public static Node buildBST(int[] inorder, int start, int end) {
+        if(start > end) return null;
+        int mid = (start + end) / 2;
+        Node root = new Node(inorder[mid]);
+        root.left = buildBST(inorder, start, mid - 1);
+        root.right = buildBST(inorder, mid + 1, end);
+        return root;
+    }
+
+    // Preorder traversal
+    public static void preorder(Node root) {
+        if(root == null) return;
+        System.out.print(root.val + " ");
+        preorder(root.left);
+        preorder(root.right);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] inorder = new int[n];
+        for(int i=0; i<n; i++) {
+            inorder[i] = sc.nextInt();
+        }
+        Node root = buildBST(inorder, 0, n-1);
+        preorder(root);
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is **complete HackerRank format**:  
+- Clear **problem statement**.  
+- Defined **input/output format**.  
+- **Constraints**.  
+- Multiple **sample test cases**.  
+- A **Java skeleton code** for trainees to implement.  
+
+Would you like me to also prepare a **variant challenge** where the output is the **level‑order traversal** (breadth‑first) instead of preorder, so trainees practice both DFS and BFS tree traversals?
+
+
+
+
+
+
+Slug: menudriven-statistics-analyzer
+Slug: subarray-sum-equals-k-16
+Contest Slug: www.hackerrank.com/java-ece-arrays-and-oop

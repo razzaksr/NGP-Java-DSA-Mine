@@ -1,0 +1,640 @@
+📘 AVL Trees – Training Notes
+🔹 1. What is AVL Tree?
+
+AVL Tree = Self-Balancing Binary Search Tree
+Invented by Adelson-Velsky and Landis
+
+Maintains balance to ensure:
+
+Search: O(log n)
+
+Insert: O(log n)
+
+Delete: O(log n)
+
+🔹 2. Why AVL Tree?
+
+Normal BST may become skewed:
+
+1
+ \
+  2
+   \
+    3
+
+
+Worst-case height → O(n)
+AVL fixes this by maintaining strict balance.
+
+🔹 3. Balance Factor (BF)
+BF = height(left subtree) – height(right subtree)
+
+
+Valid BF values:
+
+-1, 0, +1
+
+
+If outside this range → rotation required.
+
+🔹 4. AVL Rotations
+➤ LL Rotation (Right Rotation)
+
+Occurs when you insert into left-left.
+
+➤ RR Rotation (Left Rotation)
+
+Occurs when you insert into right-right.
+
+➤ LR Rotation (Left-Right Rotation)
+
+Left heavy, but inserted in right subtree.
+
+➤ RL Rotation (Right-Left Rotation)
+
+Right heavy, but inserted in left subtree.
+
+🔹 5. AVL Insert Steps
+
+Perform normal BST insertion
+
+Update height
+
+Calculate balance factor
+
+Apply correct rotation
+
+🔹 6. AVL Delete Steps
+
+Perform normal BST delete
+
+Update height
+
+Get balance factor
+
+Rebalance using rotations
+
+🔹 7. Traversals in AVL Tree
+
+Inorder → sorted output
+
+Preorder → root-left-right
+
+Postorder → left-right-root
+
+Level order → BFS
+
+🔹 8. Applications of AVL Trees
+
+Used when:
+
+Very frequent SEARCH operations
+
+Data must remain always balanced
+
+Examples:
+✔ Database indexing
+✔ Memory management
+✔ File systems
+✔ Cache systems
+
+Example:
+Nice — I’ll walk you through **clear, diagrammatic, step-by-step explanations** of the AVL insertion & deletion cases using small examples. Each case shows:
+
+1. the tree before the operation (with node heights and balance factors),
+2. why it becomes unbalanced,
+3. which rotation applies, and
+4. the tree after rotation (with updated heights/BFs).
+
+I’ll use simple ASCII trees and label each node as `value(h,b)` where `h` = node height, `b` = balance factor = `height(left) - height(right)`. Follow along as if you’re drawing this on your whiteboard.
+
+---
+
+# Quick reference (how we compute)
+
+* `height(null) = 0` (in our AVL code we used `height = 1` for a leaf node; for diagrams I’ll show leaf height = 1 to match the code)
+* For a node: `height = max(height(left), height(right)) + 1`
+* `BF = height(left) - height(right)`
+* Valid BF ∈ { -1, 0, +1 } → otherwise rotate.
+
+---
+
+## 1) **LL Case (Right Rotation)**
+
+**Sequence that causes it:** Insert `30`, then `20`, then `10`.
+
+### Step A — after inserting 30, 20, 10 (BST insertion, before balancing)
+
+Insert order: 30 → 20 → 10.
+
+Tree (raw BST):
+
+```
+    30
+   /
+  20
+ /
+10
+```
+
+Compute heights and BFs (leaf height = 1):
+
+* Node `10`: height = 1, BF = 0
+* Node `20`: left height = 1, right = 0 → height = 2, BF = 1
+* Node `30`: left height = 2, right = 0 → height = 3, BF = 2  ← **unbalanced** (BF > 1)
+
+Write nodes as `val(h,b)`:
+
+```
+    30(3,2)
+   /
+ 20(2,1)
+ /
+10(1,0)
+```
+
+### Step B — Identify case
+
+* Unbalanced node = `30` with BF = +2 and the insertion was into `30`'s left-left subtree (path: 30 → left → left).
+* This is **LL** case → do **right rotate** at `30`.
+
+### Step C — Right rotation at 30
+
+Right rotate transforms:
+
+```
+      30                20
+     /                 /  \
+   20      -->       10   30
+  /
+10
+```
+
+### Step D — Update heights & BFs after rotation
+
+Calculate:
+
+* `10`: height = 1, BF = 0
+* `30`: height = 1, BF = 0
+* `20`: left height =1, right height =1 → height = 2, BF = 0
+
+Final tree:
+
+```
+   20(2,0)
+  /    \
+10(1,0) 30(1,0)
+```
+
+Rotation fixed balance. Explain to students: right rotation moves left child up; original root becomes right child of new root.
+
+---
+
+## 2) **RR Case (Left Rotation)**
+
+**Sequence:** Insert `10`, `20`, `30`.
+
+### Step A — after BST insertion
+
+```
+10
+ \
+  20
+   \
+    30
+```
+
+Heights/BFs:
+
+* 30(1,0)
+* 20: left=0 right=1 → height=2 BF=-1
+* 10: left=0 right=2 → height=3 BF=-2 ← **unbalanced**
+
+Write:
+
+```
+10(3,-2)
+  \
+ 20(2,-1)
+   \
+   30(1,0)
+```
+
+### Step B — Identify case
+
+* Unbalanced node `10` BF = -2, insertion in right-right path → **RR** case → perform **left rotate** at `10`.
+
+### Step C — Left rotation at 10
+
+```
+   10                20
+     \     -->     /   \
+     20           10   30
+       \
+       30
+```
+
+### Step D — Update heights
+
+Final:
+
+```
+   20(2,0)
+  /    \
+10(1,0) 30(1,0)
+```
+
+Teaching note: left rotation moves right child up; original root becomes left child of new root.
+
+---
+
+## 3) **LR Case (Left-Right) — double rotation**
+
+**Sequence:** Insert `30`, then `10`, then `20`.
+
+### Step A — after BST insertion (before balancing)
+
+Insert order yields:
+
+```
+   30
+  /
+10
+  \
+  20
+```
+
+Heights/BFs:
+
+* 20(1,0)
+* 10: left=0 right=1 → height=2 BF=-1
+* 30: left=2 right=0 → height=3 BF=2 ← **unbalanced**
+
+As `30` has BF = +2 (left heavy) but the insertion was in left→right subtree of `30` → **LR** case.
+
+Write:
+
+```
+    30(3,2)
+   /
+10(2,-1)
+  \
+ 20(1,0)
+```
+
+### Step B — LR resolution = **left-rotate on left child**, then **right-rotate on node**
+
+1. Left rotate at `10` (the left child of 30):
+
+```
+Before:
+   10
+    \
+    20
+
+After left-rotate at 10:
+   20
+  /
+10
+```
+
+Now intermediate tree:
+
+```
+   30
+  /
+ 20
+ /
+10
+```
+
+2. Right rotate at `30`:
+   Right rotate:
+
+```
+    30           20
+   /            /  \
+  20   -->    10    30
+ /
+10
+```
+
+### Step C — Update heights
+
+All nodes height=1 for leaves, root 20 height=2, BF=0. Final:
+
+```
+  20(2,0)
+ /    \
+10(1,0) 30(1,0)
+```
+
+Teaching tip: LR is “double rotation” — first rotate the problematic child to convert LR into LL, then perform LL rotation.
+
+---
+
+## 4) **RL Case (Right-Left) — double rotation**
+
+**Sequence:** Insert `10`, then `30`, then `20`.
+
+### Step A — after BST insertion
+
+```
+10
+  \
+  30
+  /
+20
+```
+
+Heights/BFs:
+
+* 20(1,0)
+* 30: left=1 right=0 → height=2 BF=1
+* 10: left=0 right=2 → height=3 BF=-2 ← **unbalanced**
+
+Write:
+
+```
+10(3,-2)
+  \
+  30(2,1)
+  /
+20(1,0)
+```
+
+### Step B — RL resolution = **right-rotate on right child**, then **left-rotate on node**
+
+1. Right rotate at `30`:
+
+```
+Before:
+ 30
+ /
+20
+
+After:
+ 20
+  \
+  30
+```
+
+Intermediate:
+
+```
+10
+ \
+ 20
+  \
+  30
+```
+
+2. Left rotate at `10`:
+
+```
+  10        20
+    \  --> /  \
+    20    10  30
+      \
+      30
+```
+
+### Step C — Update heights
+
+Final:
+
+```
+ 20(2,0)
+ /    \
+10(1,0) 30(1,0)
+```
+
+Again: RL uses two rotations: first on child, then on root.
+
+---
+
+## 5) **Deletion causing rebalance**
+
+Example tree: insert `[30, 20, 40, 10, 25, 35, 50]` (balanced). Delete `50`, which is leaf — trivial. But consider deleting `35` (causes imbalance).
+
+Let's craft an example which causes rotations after delete:
+
+Start with insert: `30, 20, 40, 10, 25, 35, 50, 5`
+Current balanced AVL (simplified):
+
+```
+         30
+       /    \
+     20      40
+    /  \    /  \
+  10  25  35   50
+ /
+5
+```
+
+Now delete `50` → OK; delete `35`: then `40` becomes right child only? Depending on heights, a BF might become +2 at root or some internal node.
+
+### Concrete deletion that triggers rotation:
+
+Simpler: take tree after inserting `30,20,40,10,25,5`:
+
+Before deletion:
+
+```
+    30
+   /  \
+ 20   40
+ / \
+10 25
+/
+5
+```
+
+Heights:
+
+* 5(1,0)
+* 10: left=1 right=0 → h=2 BF=1
+* 25(1,0)
+* 20: left=2 right=1 → h=3 BF=1
+* 40(1,0)
+* 30: left=3 right=1 → h=4 BF=2 ← **unbalanced**
+
+If we delete `40` (right subtree shrink), root BF becomes 2 → need rotation (LL) at 30.
+
+After deletion of `40`:
+
+```
+    30(4,2)
+   /
+ 20(3,1)
+ / \
+10 25
+/
+5
+```
+
+LL case at `30` → right rotate at 30 → result:
+
+```
+     20
+    /  \
+ 10    30
+ /     /
+5     25
+```
+
+Now recompute heights: balanced.
+
+**Teaching note:** On deletion, imbalance can appear and you must recalculate BF upwards and apply single/double rotations just like insertion; however rotation choice depends on child balance after deletion (use `getBalance(root.left)` etc., as in code).
+
+---
+
+## 6) **Step-by-step of a single rotation with height updates — detailed arithmetic**
+
+Take LL example again (30,20,10). Do the numeric height computations and show formula:
+
+Before rotation:
+
+* `10`: h=1
+* `20`: left=1 right=0 → h = max(1,0)+1 = 2
+* `30`: left=2 right=0 → h = max(2,0)+1 = 3
+
+Right-rotate at `30`:
+
+Rotation pseudocode:
+
+```
+x = y.left
+T2 = x.right
+x.right = y
+y.left = T2
+// update heights:
+y.height = max(height(y.left), height(y.right)) + 1
+x.height = max(height(x.left), height(x.right)) + 1
+```
+
+Applying:
+
+* `y`=30, `x`=20, `T2` = null (since 20.right was null)
+* After rotation:
+
+  * `30`'s left = T2 = null, right unchanged → height(30) = max(0,0)+1 = 1
+  * `20`'s left = 10 (h=1), right = 30 (h=1) → height(20) = max(1,1)+1 = 2
+
+BF updates:
+
+* BF(20) = 1 - 1 = 0
+* BF(30) = 0 - 0 = 0
+
+This arithmetic is exactly what your code does with `node.height = Math.max(height(node.left), height(node.right)) + 1`.
+
+---
+
+## 7) **Classroom delivery tips (how to teach this to students)**
+
+1. **Start with intuition** — show how a skewed BST degrades performance to O(n).
+2. **Introduce balance factor** — compute for a few nodes by hand.
+3. **Show single rotation visually** (LL and RR). Draw before/after and compute heights.
+4. **Show double rotation visually** (LR and RL). Emphasize it’s two rotations.
+5. **Walk through code** for `insert` — show where heights are updated, balance checked, and rotations applied.
+6. **Give small hands-on exercises**:
+
+   * Insert sequence that triggers each of the 4 cases.
+   * Delete a node that forces rebalance.
+   * Have students compute heights/BFs before and after rotation.
+7. **Use dry-runs**: give array and ask students to simulate code, step-by-step.
+8. **End with complexity**: all ops O(log n), rotations O(1) per node fixed during upward traversal.
+
+---
+
+## 8) **Printable quick examples (ready to paste into slides or whiteboard)**
+
+LL example (insert 30,20,10):
+
+Before:
+
+```
+30(3,2)
+/
+20(2,1)
+/
+10(1,0)
+```
+
+After (right rotate):
+
+```
+   20(2,0)
+  /    \
+10(1,0) 30(1,0)
+```
+
+RR example (insert 10,20,30):
+
+Before:
+
+```
+10(3,-2)
+  \
+  20(2,-1)
+    \
+    30(1,0)
+```
+
+After (left rotate):
+
+```
+   20(2,0)
+  /    \
+10(1,0) 30(1,0)
+```
+
+LR example (insert 30,10,20):
+
+Before:
+
+```
+30(3,2)
+/
+10(2,-1)
+  \
+ 20(1,0)
+```
+
+After (left on 10, right on 30):
+
+```
+  20(2,0)
+ /    \
+10(1,0) 30(1,0)
+```
+
+RL example (insert 10,30,20):
+
+Before:
+
+```
+10(3,-2)
+  \
+  30(2,1)
+  /
+20(1,0)
+```
+
+After (right on 30, left on 10):
+
+```
+ 20(2,0)
+ /    \
+10(1,0)30(1,0)
+```
+
+---
+
+If you’d like, I can do **one of these next** (pick one):
+
+* Turn these diagrams into **PNG images** for slides (I can generate images),
+* Produce a **PPT slide deck** with each step as a separate slide,
+* Create a **printable PDF** or **Word** with these step-by-step diagrams (you already asked for Word earlier — I can add these diagrams to that doc).
+
+Tell me which output you want and I’ll generate it right away.

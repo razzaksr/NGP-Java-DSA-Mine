@@ -8,9 +8,6 @@ class Node {
     Node(int data) {
         this.data = data;
     }
-    public String toString(){
-        return ""+this.data+"\n";
-    }
 }
 
 public class BSTWithBFS {
@@ -36,7 +33,6 @@ public class BSTWithBFS {
     // DELETE
     Node delete(Node root, int key) {
         if (root == null) return null;
-
         if (key < root.data)
             root.left = delete(root.left, key);
         else if (key > root.data)
@@ -69,16 +65,14 @@ public class BSTWithBFS {
     // LEVEL ORDER TRAVERSAL
     void levelOrder(Node root) {
         if (root == null) return;
-
         Queue<Node> q = new LinkedList<>();
-        q.add(root);
-        System.out.println("Queue at begin "+q);
+        q.offer(root);
+        System.out.println("Queue at begin "+root.data);
         while (!q.isEmpty()) {
             Node curr = q.poll();
             System.out.print(curr.data + " ");
-
-            if (curr.left != null) q.add(curr.left);
-            if (curr.right != null) q.add(curr.right);
+            if (curr.left != null) q.offer(curr.left);
+            if (curr.right != null) q.offer(curr.right);
         }
     }
 

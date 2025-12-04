@@ -27,11 +27,11 @@ class TreeNode {
 public class MaxPathSum {
     private int maxSum;
 
-    public int maxPathSum(TreeNode root) {
-        maxSum = Integer.MIN_VALUE;
-        maxGain(root);
-        return maxSum;
-    }
+    // public int maxPathSum(TreeNode root) {
+    //     maxSum = Integer.MIN_VALUE;
+    //     maxGain(root);
+    //     return maxSum;
+    // }
 
     // Recursive helper function
     private int maxGain(TreeNode node) {
@@ -54,18 +54,19 @@ public class MaxPathSum {
     // Example usage
     public static void main(String[] args) {
         // Build sample tree
-        // TreeNode root = new TreeNode(-10);
-        // root.left = new TreeNode(9);
-        // root.right = new TreeNode(20);
-        // root.right.left = new TreeNode(15);
-        // root.right.right = new TreeNode(7);
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.left.left = new TreeNode(4);
-        root.left.right = new TreeNode(5);
+        TreeNode root = new TreeNode(-10);
+        root.left = new TreeNode(9);
+        root.right = new TreeNode(20);
+        root.right.left = new TreeNode(15);
+        root.right.right = new TreeNode(7);
+        // TreeNode root = new TreeNode(1);
+        // root.left = new TreeNode(2);
+        // root.right = new TreeNode(3);
+        // root.left.left = new TreeNode(4);
+        // root.left.right = new TreeNode(5);
 
         MaxPathSum solution = new MaxPathSum();
-        System.out.println("Maximum Path Sum: " + solution.maxPathSum(root));
+        solution.maxGain(root);
+        System.out.println("Maximum Path Sum: " + solution.maxSum);
     }
 }
