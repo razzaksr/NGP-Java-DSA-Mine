@@ -1,0 +1,500 @@
+Sure! Below is a **clean set of Java programs** for each advanced tree data structure you asked for:
+
+* **Red-Black Tree**
+* **B-Tree**
+* **Segment Tree**
+* **Fenwick Tree (Binary Indexed Tree)**
+
+All are written for **DSA training**, so:
+✔ Minimal but complete
+✔ Easy to explain in class
+✔ Correct logic & output examples
+✔ Insert/search for RBTree & BTree
+✔ Range-query examples for Segment & Fenwick Trees
+
+---
+
+# ✅ 1) **Red-Black Tree – Java Implementation**
+
+This includes insert + rotations + color fix.
+
+### ✔ Properties Covered
+
+* Every node is **Red** or **Black**
+* Root is **Black**
+* Every NULL leaf is **Black**
+* Red node cannot have red child
+* Every path has equal black-height
+
+---
+
+### **RedBlackTree.java**
+
+```java
+class RedBlackTree {
+    private static final boolean RED = true;
+    private static final boolean BLACK = false;
+
+    class Node {
+        int key;
+        Node left, right, parent;
+        boolean color;
+
+        Node(int key) {
+            this.key = key;
+            color = RED;
+        }
+    }
+
+    private Node root;
+
+    public void insert(int key) {
+        Node node = new Node(key);
+        root = bstInsert(root, node);
+        fixViolation(node);
+    }
+
+    private Node bstInsert(Node root, Node node) {
+        if (root == null) return node;
+        if (node.key < root.key) {
+            root.left = bstInsert(root.left, node);
+            root.left.parent = root;
+        } else {
+            root.right = bstInsert(root.right, node);
+            root.right.parent = root;
+        }
+        return root;
+    }
+
+    private void rotateLeft(Node x) {
+        Node y = x.right;
+        x.right = y.left;
+        if (y.left != null)
+            y.left.parent = x;
+
+        y.parent = x.parent;
+        if (x.parent == null)
+            root = y;
+        else if (x == x.parent.left)
+            x.parent.left = y;
+        else
+            x.parent.right = y;
+
+        y.left = x;
+        x.parent = y;
+    }
+
+    private void rotateRight(Node y) {
+        Node x = y.left;
+        y.left = x.right;
+        if (x.right != null)
+            x.right.parent = y;
+
+        x.parent = y.parent;
+        if (y.parent == null)
+            root = x;
+        else if (y == y.parent.left)
+            y.parent.left = x;
+        else
+            y.parent.right = x;
+
+        x.right = y;
+        y.parent = x;
+    }
+
+    private void fixViolation(Node node) {
+        Node parent, grandParent;
+
+        while ((node != root) && (node.color == RED) && 
+               (node.parent.color == RED)) {
+
+            parent = node.parent;
+            grandParent = parent.parent;
+
+            // Case A: parent is left child
+            if (parent == grandParent.left) {
+                Node uncle = grandParent.right;
+                // Case 1: uncle is red
+                if (uncle != null && uncle.color == RED) {
+                    grandParent.color = RED;
+                    parent.color = BLACK;
+                    uncle.color = BLACK;
+                    node = grandParent;
+                }
+                // Case 2: uncle is black
+                else {
+                    if (node == parent.right) {
+                        rotateLeft(parent);
+                        node = parent;
+                        parent = node.parent;
+                    }
+                    rotateRight(grandParent);
+                    boolean temp = parent.color;
+                    parent.color = grandParent.color;
+                    grandParent.color = temp;
+                    node = parent;
+                }
+            }
+            // Case B: parent is right child
+            else {
+                Node uncle = grandParent.left;
+                if (uncle != null && uncle.color == RED) {
+                    grandParent.color = RED;
+                    parent.color = BLACK;
+                    uncle.color = BLACK;
+                    node = grandParent;
+                } else {
+                    if (node == parent.left) {
+                        rotateRight(parent);
+                        node = parent;
+                        parent = node.parent;
+                    }
+                    rotateLeft(grandParent);
+                    boolean temp = parent.color;
+                    parent.color = grandParent.color;
+                    grandParent.color = temp;
+                    node = parent;
+                }
+            }
+        }
+        root.color = BLACK;
+    }
+
+    public void inorder() {
+        inorderRec(root);
+        System.out.println();
+    }
+
+    private void inorderRec(Node root) {
+        if (root != null) {
+            inorderRec(root.left);
+            System.out.print(root.key + "(" + (root.color?"R":"B") + ") ");
+            inorderRec(root.right);
+        }
+    }
+
+    public static void main(String[] args) {
+        RedBlackTree tree = new RedBlackTree();
+        int[] keys = {10, 20, 30, 15, 25};
+        for(int key : keys) tree.insert(key);
+        tree.inorder();
+    }
+}
+```
+
+---
+
+# ✅ 2) **B-Tree Implementation (Order=3)**
+
+Supports insert + search.
+
+### ✔ Properties
+
+* Multi-way search tree
+* Nodes can have **M children**
+* Keys stored sorted
+
+---
+
+### **BTree.java**
+
+```java
+class BTreeNode {
+    int[] keys;
+    int t; // degree
+    BTreeNode[] children;
+    int n;
+    boolean leaf;
+
+    BTreeNode(int t, boolean leaf) {
+        this.t = t;
+        this.leaf = leaf;
+        this.keys = new int[2*t - 1];
+        this.children = new BTreeNode[2*t];
+        this.n = 0;
+    }
+
+    void traverse() {
+        for(int i=0;i<n;i++) {
+            if(!leaf) children[i].traverse();
+            System.out.print(keys[i] + " ");
+        }
+        if(!leaf)
+            children[n].traverse();
+    }
+
+    BTreeNode search(int key) {
+        int i = 0;
+        while(i < n && key > keys[i])
+            i++;
+
+        if(i<n && keys[i] == key)
+            return this;
+
+        if(leaf) return null;
+        return children[i].search(key);
+    }
+}
+
+public class BTree {
+    BTreeNode root;
+    int t;
+
+    BTree(int t) {
+        this.root = null;
+        this.t = t;
+    }
+
+    public void insert(int key) {
+        if(root == null) {
+            root = new BTreeNode(t, true);
+            root.keys[0] = key;
+            root.n = 1;
+            return;
+        }
+
+        if(root.n == 2*t - 1) {
+            BTreeNode s = new BTreeNode(t, false);
+            s.children[0] = root;
+            splitChild(s, 0, root);
+
+            int i = 0;
+            if(s.keys[0] < key)
+                i++;
+            insertNonFull(s.children[i], key);
+
+            root = s;
+        } else {
+            insertNonFull(root, key);
+        }
+    }
+
+    private void splitChild(BTreeNode x, int i, BTreeNode y) {
+        BTreeNode z = new BTreeNode(t, y.leaf);
+        z.n = t - 1;
+
+        for (int j = 0; j < t - 1; j++)
+            z.keys[j] = y.keys[j + t];
+
+        if(!y.leaf) {
+            for(int j = 0; j< t; j++)
+                z.children[j] = y.children[j + t];
+        }
+
+        y.n = t - 1;
+
+        for(int j = x.n; j >= i+1; j--)
+            x.children[j+1] = x.children[j];
+
+        x.children[i+1] = z;
+
+        for(int j = x.n - 1; j >= i; j--)
+            x.keys[j+1] = x.keys[j];
+
+        x.keys[i] = y.keys[t-1];
+        x.n++;
+    }
+
+    private void insertNonFull(BTreeNode x, int key) {
+        int i = x.n - 1;
+
+        if(x.leaf) {
+            while(i >= 0 && key < x.keys[i]) {
+                x.keys[i+1] = x.keys[i];
+                i--;
+            }
+            x.keys[i+1] = key;
+            x.n++;
+        } else {
+            while(i >= 0 && key < x.keys[i]) i--;
+            i++;
+            if(x.children[i].n == 2*t - 1) {
+                splitChild(x, i, x.children[i]);
+                if(key > x.keys[i]) i++;
+            }
+            insertNonFull(x.children[i], key);
+        }
+    }
+
+    public void traverse() {
+        if(root != null) root.traverse();
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        BTree tree = new BTree(3);
+        int[] keys = {10,20,5,6,12,30,7,17};
+        for(int k: keys) tree.insert(k);
+        tree.traverse();
+    }
+}
+```
+
+---
+
+# ✅ 3) **Segment Tree**
+
+Supports Range Sum Query + Update.
+
+---
+
+### **SegmentTree.java**
+
+```java
+class SegmentTree {
+    int[] st;
+    int n;
+
+    SegmentTree(int[] arr) {
+        n = arr.length;
+        st = new int[4*n];
+        build(arr, 0, n-1, 0);
+    }
+
+    void build(int[] arr, int l, int r, int si) {
+        if(l == r) {
+            st[si] = arr[l];
+            return;
+        }
+        int mid = (l + r) / 2;
+        build(arr, l, mid, 2*si+1);
+        build(arr, mid+1, r, 2*si+2);
+        st[si] = st[2*si+1] + st[2*si+2];
+    }
+
+    int query(int qs, int qe) {
+        return queryUtil(0, n-1, qs, qe, 0);
+    }
+
+    int queryUtil(int l, int r, int qs, int qe, int si) {
+        if(qs <= l && qe >= r)
+            return st[si];
+        if(qe < l || qs > r)
+            return 0;
+        int mid = (l+r)/2;
+        return queryUtil(l,mid,qs,qe,2*si+1) + 
+               queryUtil(mid+1,r,qs,qe,2*si+2);
+    }
+
+    void update(int idx, int val) {
+        updateUtil(0,n-1,idx,val,0);
+    }
+
+    void updateUtil(int l, int r, int idx, int val, int si) {
+        if(l == r) {
+            st[si] = val;
+            return;
+        }
+        int mid = (l+r)/2;
+        if(idx <= mid)
+            updateUtil(l,mid,idx,val,2*si+1);
+        else
+            updateUtil(mid+1,r,idx,val,2*si+2);
+
+        st[si] = st[2*si+1] + st[2*si+2];
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1,2,3,4,5};
+        SegmentTree st = new SegmentTree(arr);
+
+        System.out.println(st.query(1,3)); // 2+3+4 = 9
+        st.update(2,10); // change 3 -> 10
+        System.out.println(st.query(1,3)); // 2+10+4 = 16
+    }
+}
+```
+
+---
+
+# ✅ 4) **Fenwick Tree (Binary Indexed Tree)**
+
+---
+
+### **FenwickTree.java**
+
+```java
+class FenwickTree {
+    int[] BIT;
+    int n;
+
+    FenwickTree(int[] arr) {
+        n = arr.length;
+        BIT = new int[n+1];
+        for(int i=0;i<n;i++)
+            update(i, arr[i]);
+    }
+
+    void update(int index, int val) {
+        index++;
+        while(index <= n) {
+            BIT[index] += val;
+            index += index & (-index);
+        }
+    }
+
+    int prefixSum(int index) {
+        index++;
+        int sum = 0;
+        while(index > 0) {
+            sum += BIT[index];
+            index -= index & (-index);
+        }
+        return sum;
+    }
+
+    int rangeSum(int l, int r) {
+        return prefixSum(r) - prefixSum(l-1);
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1,2,3,4,5};
+        FenwickTree ft = new FenwickTree(arr);
+
+        System.out.println(ft.rangeSum(1,3)); // 2+3+4 = 9
+        ft.update(2, 7); // add 7 → 3+7=10
+        System.out.println(ft.rangeSum(1,3)); // 2+10+4 = 16
+    }
+}
+```
+
+---
+
+# 🎯 Final Result
+
+You now have **working Java implementations** for:
+
+| Tree Type      | Features                       |
+| -------------- | ------------------------------ |
+| Red-Black Tree | Self-balancing BST, rotation   |
+| B-Tree         | Disk-friendly, multi-key nodes |
+| Segment Tree   | Range-query & point update     |
+| Fenwick Tree   | Prefix sums in O(logN)         |
+
+---
+
+## 📌 Want Next?
+
+I can provide:
+
+### ✔ Detailed Training Notes
+
+* Theory + diagrams
+* Insert/delete walkthrough
+* B-Tree node splitting visuals
+* Segment Tree tree diagram
+* Fenwick tree bit operations
+* Interview questions
+
+### ✔ Downloadable Word/PDF
+
+* With code blocks
+* With diagrams
+
+### ✔ Assignment Problems
+
+* Hands-on practice
+* Placement focused MCQs
+* Debugging tasks
+
+Just tell me what you want 😊
