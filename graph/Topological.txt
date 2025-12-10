@@ -1,0 +1,122 @@
+Great choice, S — **Topological Sort** is a natural next step after BFS/DFS and cycle detection. Let’s break it down step‑by‑step in the style you prefer (clear, array‑driven, modular explanation), then I’ll show you a clean Java implementation.
+
+---
+
+## 📖 Introduction to Topological Sort
+
+- **Definition**:  
+  Topological sort is an ordering of the vertices in a **Directed Acyclic Graph (DAG)** such that for every directed edge `u → v`, vertex `u` comes **before** vertex `v` in the ordering.
+
+- **Where it’s used**:  
+  - Task scheduling (some tasks must be done before others).  
+  - Course prerequisites (take course A before course B).  
+  - Dependency resolution (libraries, packages, build systems).
+
+- **Key points**:  
+  - Works **only on DAGs**.  
+  - If a cycle exists → topological sort is **not possible**.  
+  - Multiple valid orders may exist.
+
+---
+
+## ⚙️ Approaches
+
+1. **DFS-based**  
+   - Perform DFS.  
+   - After visiting all neighbors of a node, push it onto a stack.  
+   - Final order = reverse of stack.
+
+2. **Kahn’s Algorithm (BFS-based)**  
+   - Compute **in-degree** (number of incoming edges) for each node.  
+   - Start with nodes of in-degree 0.  
+   - Remove edges step by step, updating in-degrees.  
+   - Collect nodes in order.
+
+---
+
+## 🖥️ Java Implementation (Kahn’s Algorithm)
+
+```java
+import java.util.*;
+
+public class TopologicalSort {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt(); // number of vertices
+        int M = sc.nextInt(); // number of edges
+
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i <= N; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        int[] indegree = new int[N + 1];
+
+        for (int i = 0; i < M; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            graph.get(u).add(v);
+            indegree[v]++; // count incoming edge
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 1; i <= N; i++) {
+            if (indegree[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        List<Integer> topoOrder = new ArrayList<>();
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            topoOrder.add(node);
+
+            for (int neigh : graph.get(node)) {
+                indegree[neigh]--;
+                if (indegree[neigh] == 0) {
+                    q.add(neigh);
+                }
+            }
+        }
+
+        if (topoOrder.size() == N) {
+            for (int x : topoOrder) {
+                System.out.print(x + " ");
+            }
+        } else {
+            System.out.println("IMPOSSIBLE"); // cycle detected
+        }
+    }
+}
+```
+
+---
+
+## 🧪 Example Run
+
+**Input**
+```
+6 6
+1 2
+1 3
+3 4
+2 4
+4 5
+5 6
+```
+
+**Output**
+```
+1 2 3 4 5 6
+```
+
+**Explanation**:  
+- In-degree array starts as `[0,0,1,1,2,1,1]`.  
+- Node `1` has in-degree 0 → starts first.  
+- Removing edges step by step produces valid order.
+
+---
+
+✅ This gives your trainees a **solid introduction** plus a working Java solution.  
+
+Would you like me to also prepare a **DFS-based implementation** alongside this, so they can compare both approaches and see how recursion stack vs. in-degree queue differ?

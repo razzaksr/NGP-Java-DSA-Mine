@@ -1,0 +1,69 @@
+Perfect, let’s analyze the **time and space complexity** of graph representations using both **Adjacency Matrix** and **Adjacency List**. I’ll take a simple example graph and then generalize.
+
+---
+
+## 📊 Example Graph
+Let’s say we have a graph with:
+- \(V = 4\) vertices
+- \(E = 4\) edges: (0–1), (0–2), (1–2), (2–3)
+
+We’ll compare how this graph is represented in **Adjacency Matrix** vs **Adjacency List**.
+
+---
+
+## 🧩 Adjacency Matrix
+- Representation: A \(V \times V\) 2D array.
+- Space Complexity:
+  - Always \(O(V^2)\), regardless of number of edges.
+  - Even if the graph is sparse (few edges), the matrix still stores all possible pairs.
+- Time Complexity:
+  - **Add edge**: \(O(1)\) → just set `matrix[i][j] = 1`.
+  - **Remove edge**: \(O(1)\).
+  - **Check if edge exists**: \(O(1)\).
+  - **Iterate over neighbors of a vertex**: \(O(V)\) → must scan entire row.
+
+---
+
+## 🧩 Adjacency List
+- Representation: An array/list of size \(V\), where each entry stores a list of neighbors.
+- Space Complexity:
+  - \(O(V + E)\).
+  - Much more efficient for sparse graphs (when \(E \ll V^2\)).
+- Time Complexity:
+  - **Add edge**: \(O(1)\) → append to list.
+  - **Remove edge**: \(O(\deg(v))\) → need to search neighbor list.
+  - **Check if edge exists**: \(O(\deg(v))\).
+  - **Iterate over neighbors of a vertex**: \(O(\deg(v))\) → only scan actual neighbors.
+
+---
+
+## ⚖️ Comparison Table
+
+| Operation                  | Adjacency Matrix | Adjacency List |
+|-----------------------------|------------------|----------------|
+| **Space**                  | \(O(V^2)\)       | \(O(V + E)\)   |
+| **Add edge**               | \(O(1)\)         | \(O(1)\)       |
+| **Remove edge**            | \(O(1)\)         | \(O(\deg(v))\) |
+| **Check edge existence**   | \(O(1)\)         | \(O(\deg(v))\) |
+| **Iterate neighbors**      | \(O(V)\)         | \(O(\deg(v))\) |
+
+---
+
+## 🔍 Key Insights
+- **Adjacency Matrix** is better when:
+  - Graph is **dense** (close to \(V^2\) edges).
+  - You need **fast edge lookups**.
+- **Adjacency List** is better when:
+  - Graph is **sparse** (few edges).
+  - You need to **iterate neighbors efficiently**.
+
+---
+
+👉 So, for our example graph (\(V=4, E=4\)):
+- **Matrix space** = \(4^2 = 16\) cells.
+- **List space** = \(V + E = 8\) entries.
+- Clearly, adjacency list is more space-efficient here.
+
+---
+
+Would you like me to also **analyze BFS/DFS traversal complexity** on both representations? That’s where the difference becomes even more practical.

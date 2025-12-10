@@ -3292,9 +3292,585 @@ Would you like me to also **add vertical-specific flavors** (like healthcare, lo
 
 
 
+Slug: vehicle-queue-cycle-detection-in-directed-graph
+Slug: library-network-connected-components
+Contest Slug: https://www.hackerrank.com/java-dsa-graph-1
+
+
+
+Perfect, S 👌 — let’s put both challenges into **full HackerRank-style format** with problem statement, input/output, constraints, sample explanation, and **three test cases each**. This way you can directly plug them into your trainee contests.
+
+---
+
+# 🚗 Challenge 1: Vehicle Queue – Cycle Detection in Directed Graph
+
+### Problem Statement
+A city traffic system is modeled as a directed graph where intersections are nodes and one-way roads are edges. Detect if the system contains a **traffic cycle** (a path that starts and ends at the same intersection).
+
+### Input Format
+- First line: `N M` (number of intersections, number of roads)  
+- Next `M` lines: `u v` (directed road from intersection `u` to `v`).
+
+### Output Format
+- Print `"YES"` if a cycle exists.  
+- Print `"NO"` otherwise.
+
+### Constraints
+- \(1 \leq N \leq 10^5\)  
+- \(1 \leq M \leq 2 \cdot 10^5\)
+
+---
+
+### Test Case 1
+**Input**
+```
+4 4
+1 2
+2 3
+3 4
+4 2
+```
+**Output**
+```
+YES
+```
+**Explanation**: Path `2 → 3 → 4 → 2` forms a cycle.
+
+---
+
+### Test Case 2
+**Input**
+```
+5 4
+1 2
+2 3
+3 4
+4 5
+```
+**Output**
+```
+NO
+```
+**Explanation**: No path loops back to the starting node.
+
+---
+
+### Test Case 3
+**Input**
+```
+3 3
+1 2
+2 3
+3 1
+```
+**Output**
+```
+YES
+```
+**Explanation**: Cycle exists: `1 → 2 → 3 → 1`.
+
+---
+
+---
+
+# 📚 Challenge 2: Library Network – Connected Components
+
+### Problem Statement
+A library system has multiple branches. Each branch may be connected to others via shared resources. The system is modeled as an **undirected graph**. Your task is to determine the number of **connected components** in the network.
+
+### Input Format
+- First line: `N M` (number of branches, number of connections)  
+- Next `M` lines: `u v` (connection between branch `u` and branch `v`).  
+- Branches are numbered `1...N`.
+
+### Output Format
+- Print a single integer: the number of connected components.
+
+### Constraints
+- \(1 \leq N \leq 10^5\)  
+- \(0 \leq M \leq 2 \cdot 10^5\)
+
+---
+
+### Test Case 1
+**Input**
+```
+6 3
+1 2
+2 3
+5 6
+```
+**Output**
+```
+3
+```
+**Explanation**: Components are `{1,2,3}`, `{4}`, `{5,6}`.
+
+---
+
+### Test Case 2
+**Input**
+```
+5 0
+```
+**Output**
+```
+5
+```
+**Explanation**: No connections, each branch is isolated.
+
+---
+
+### Test Case 3
+**Input**
+```
+7 5
+1 2
+2 3
+4 5
+5 6
+6 7
+```
+**Output**
+```
+2
+```
+**Explanation**: Components are `{1,2,3}` and `{4,5,6,7}`.
+
+---
+
+✅ Now you have **two complete HackerRank challenges** with **three test cases each**, strictly aligned with what you’ve taught (adjacency, BFS/DFS, degree).  
+
+Would you like me to also **draft the stepwise solution outlines** (DFS recursion trace for cycle detection, BFS/DFS exploration for components) so your trainees can see the *flow of values* exactly the way you prefer to teach?
+
+
+ECE:
+Slug: vehicle-loan-emi-calculator
+Slug: health-metrics-calculator
+Contest Slug: https://www.hackerrank.com/java-ece-oop-1
+
+AiDS:
+Slug: course-schedule-9-1
+Slg: number-of-islands-18
+Contet Slug: https://www.hackerrank.com/java-dsa-graph-2
+
+
+ECE:
+Slug: banking-system-interest-calculation
+Slug: library-system-fine-calculation
+Contest Slug: https://www.hackerrank.com/java-ece-oop-2
+
+Got it, S 👍. You want **two more problems at the same level of complexity as the overriding-based retail store example** (not the simpler inheritance one). I’ll design them so they push your trainees to think about **method overriding, polymorphism, and distinct vertical contexts**, while staying within the concepts you’ve already covered.  
+
+---
+
+# 🚀 Challenge 1: **Banking System – Overriding Interest Calculation**
+
+### Problem Statement  
+You are designing a banking system.  
+- A base class `BankAccount` has a method `calculateInterest(double amount)` that returns **3% interest**.  
+- A derived class `SavingsAccount` overrides the method to return **5% interest**.  
+- A derived class `FixedDepositAccount` overrides the method to return **7% interest**.  
+
+Write a program that:  
+1. Reads deposit amount and account type.  
+2. Prints the interest earned.  
+
+### Input Format  
+- First line: Deposit amount (double)  
+- Second line: Account type (`Savings` or `FixedDeposit`)  
+
+### Output Format  
+- Print interest in the format:  
+  ```
+  Interest: <value>
+  ```
+
+### Constraints  
+- Amount is between 1000 and 1000000.  
+- Account type is either `Savings` or `FixedDeposit`.  
+
+### Sample Input  
+```
+50000
+FixedDeposit
+```
+
+### Sample Output  
+```
+Interest: 3500.0
+```
+
+---
+
+### Skeleton Code
+```java
+import java.util.*;
+
+class BankAccount {
+    public double calculateInterest(double amount){
+        return amount * 0.03;
+    }
+}
+
+class SavingsAccount extends BankAccount {
+    @Override
+    public double calculateInterest(double amount){
+        return amount * 0.05;
+    }
+}
+
+class FixedDepositAccount extends BankAccount {
+    @Override
+    public double calculateInterest(double amount){
+        return amount * 0.07;
+    }
+}
+
+public class Solution {
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        double amount = sc.nextDouble();
+        String type = sc.next();
+
+        BankAccount account;
+        if(type.equals("Savings")){
+            account = new SavingsAccount();
+        } else {
+            account = new FixedDepositAccount();
+        }
+
+        double interest = account.calculateInterest(amount);
+        System.out.println("Interest: " + interest);
+    }
+}
+```
+
+---
+
+# 🚀 Challenge 2: **Library System – Overriding Fine Calculation**
+
+### Problem Statement  
+You are designing a library system.  
+- A base class `LibraryItem` has a method `calculateFine(int daysLate)` that returns **₹2 per day**.  
+- A derived class `Book` overrides the method to return **₹5 per day**.  
+- A derived class `Magazine` overrides the method to return **₹3 per day**.  
+
+Write a program that:  
+1. Reads number of days late and item type.  
+2. Prints the fine amount.  
+
+### Input Format  
+- First line: Number of days late (integer)  
+- Second line: Item type (`Book` or `Magazine`)  
+
+### Output Format  
+- Print fine in the format:  
+  ```
+  Fine: <value>
+  ```
+
+### Constraints  
+- Days late is between 1 and 60.  
+- Item type is either `Book` or `Magazine`.  
+
+### Sample Input  
+```
+10
+Book
+```
+
+### Sample Output  
+```
+Fine: 50
+```
+
+---
+
+### Skeleton Code
+```java
+import java.util.*;
+
+class LibraryItem {
+    public int calculateFine(int daysLate){
+        return daysLate * 2;
+    }
+}
+
+class Book extends LibraryItem {
+    @Override
+    public int calculateFine(int daysLate){
+        return daysLate * 5;
+    }
+}
+
+class Magazine extends LibraryItem {
+    @Override
+    public int calculateFine(int daysLate){
+        return daysLate * 3;
+    }
+}
+
+public class Solution {
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int daysLate = sc.nextInt();
+        String type = sc.next();
+
+        LibraryItem item;
+        if(type.equals("Book")){
+            item = new Book();
+        } else {
+            item = new Magazine();
+        }
+
+        int fine = item.calculateFine(daysLate);
+        System.out.println("Fine: " + fine);
+    }
+}
+```
+
+---
+
+✅ Both problems are **distinct, vertical-specific, and override-focused** like your Monitor/Warehouse and Retail Store examples.  
+- Challenge 1: Banking → overriding interest calculation.  
+- Challenge 2: Library → overriding fine calculation.  
+
+Would you like me to also **add hidden test cases** (multiple variations with edge values) so you can directly plug them into HackerRank’s test case section?
+
+Perfect, S 👌. Let’s enrich both problems with **at least 3 test cases each** (covering normal, edge, and variation scenarios). This way you can directly plug them into HackerRank’s test case section.
+
+---
+
+# 🚀 Challenge 1: Banking System – Overriding Interest Calculation
+
+### Sample Test Cases
+
+**Test Case 1 (Normal case)**  
+Input:  
+```
+50000
+FixedDeposit
+```  
+Output:  
+```
+Interest: 3500.0
+```
+
+**Test Case 2 (Savings account)**  
+Input:  
+```
+20000
+Savings
+```  
+Output:  
+```
+Interest: 1000.0
+```
+
+**Test Case 3 (Edge case – minimum deposit)**  
+Input:  
+```
+1000
+Savings
+```  
+Output:  
+```
+Interest: 50.0
+```
+
+---
+
+# 🚀 Challenge 2: Library System – Overriding Fine Calculation
+
+### Sample Test Cases
+
+**Test Case 1 (Book late return)**  
+Input:  
+```
+10
+Book
+```  
+Output:  
+```
+Fine: 50
+```
+
+**Test Case 2 (Magazine late return)**  
+Input:  
+```
+7
+Magazine
+```  
+Output:  
+```
+Fine: 21
+```
+
+**Test Case 3 (Edge case – maximum days late)**  
+Input:  
+```
+60
+Book
+```  
+Output:  
+```
+Fine: 300
+```
+
+---
+
+✅ Now each problem has **3 clear test cases** (normal, variation, and edge).  
+Would you like me to also **bundle these into HackerRank-style hidden test cases** (with multiple inputs/outputs in one file) so your trainees can’t just hardcode answers?
 
 
 
 
 
 
+
+AiDS:
+Slug: cheapest-flights-within-k-stops-4-1
+Slug: find-the-town-judge-2
+Contest Slug: https://www.hackerrank.com/java-dsa-graph-3
+
+
+
+
+
+
+
+
+
+Reconstruct Itinerary
+You are given a list of airline tickets where tickets[i] = [fromi, toi] represent the departure and the arrival airports of one flight. Reconstruct the itinerary in order and return it.
+All of the tickets belong to a man who departs from "JFK", thus, the itinerary must begin with "JFK". If there are multiple valid itineraries, you should return the itinerary that has the smallest lexical order when read as a single string.
+For example, the itinerary ["JFK", "LGA"] has a smaller lexical order than ["JFK", "LGB"].
+You may assume all tickets form at least one valid itinerary. You must use all the tickets once and only once.
+
+Input: tickets = [["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]
+Output: ["JFK","MUC","LHR","SFO","SJC"]
+
+Input: tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
+Output: ["JFK","ATL","JFK","SFO","ATL","SFO"]
+Explanation: Another possible reconstruction is ["JFK","SFO","ATL","JFK","ATL","SFO"] but it is larger in lexical order.
+
+
+
+
+
+
+Word Ladder
+A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence of words beginWord -> s1 -> s2 -> ... -> sk 
+such that:
+Every adjacent pair of words differs by a single letter.
+Every si for 1 <= i <= k is in wordList. 
+Note that beginWord does not need to be in wordList.
+sk == endWord
+Given two words, beginWord and endWord, and a dictionary wordList, return the number of words in the shortest transformation sequence from beginWord to endWord, or 0 if no such sequence exists.
+
+Example 1:
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+Output: 5
+Explanation: One shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> cog", which is 5 words long.
+
+Example 2:
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
+Output: 0
+Explanation: The endWord "cog" is not in wordList, therefore there is no valid transformation sequence.
+
+
+
+
+
+
+
+Swim in Rising Water
+You are given an n x n integer matrix grid where each value grid[i][j] represents the elevation at that point (i, j).
+It starts raining, and water gradually rises over time. At time t, the water level is t, meaning any cell with elevation less than equal to t is submerged or reachable.
+You can swim from a square to another 4-directionally adjacent square if and only if the elevation of both squares individually are at most t. You can swim infinite distances in zero time. Of course, you must stay within the boundaries of the grid during your swim.
+Return the minimum time until you can reach the bottom right square (n - 1, n - 1) if you start at the top left square (0, 0).
+
+Example 1:
+Input: grid = [[0,2],[1,3]]
+Output: 3
+Explanation:
+At time 0, you are in grid location (0, 0).
+You cannot go anywhere else because 4-directionally adjacent neighbors have a higher elevation than t = 0.
+You cannot reach point (1, 1) until time 3.
+When the depth of water is 3, we can swim anywhere inside the grid.
+
+Example 2:
+Input: grid = [[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20],[10,9,8,7,6]]
+Output: 16
+Explanation: The final route is shown.
+We need to wait until time 16 so that (0, 0) and (4, 4) are connected.
+
+
+
+
+
+
+Alien Dictionary problem
+You’re given a list of words sorted according to an alien language dictionary. The task is to determine the order of characters in that alien language.
+Given a sorted dictionary of an alien language, find the order of the characters. The dictionary is given in the form of a list of words where the order of characters is lexicographically increasing
+
+Problem Statement
+You’re given a list of words sorted according to an **alien language dictionary**. The task is to determine the order of characters in that alien language.
+
+---
+
+ Key Idea
+- The words are sorted lexicographically according to alien rules.
+- By comparing **adjacent words**, we can deduce ordering constraints between characters.
+- These constraints form a **directed graph** (edges: `u → v` means `u` comes before `v`).
+- The solution is to perform a **topological sort** on this graph.
+
+Stepwise Approach
+
+1. Input Example
+   words = ["baa", "abcd", "abca", "cab", "cad"]
+
+   Alphabet size = 4 (say `a, b, c, d`).
+
+2.  Build Graph
+   - Compare `baa` vs `abcd` → first differing char: `b` vs `a` → edge `b → a`.
+   - Compare `abcd` vs `abca` → differing char: `d` vs `a` → edge `d → a`.
+   - Compare `abca` vs `cab` → differing char: `a` vs `c` → edge `a → c`.
+   - Compare `cab` vs `cad` → differing char: `b` vs `d` → edge `b → d`.
+
+   Graph edges:
+   b → a
+   d → a
+   a → c
+   b → d
+
+
+3. Graph Representation (Adjacency List)
+   b: [a, d]
+   d: [a]
+   a: [c]
+   c: []
+
+4. Topological Sort (Kahn’s Algorithm or DFS)
+   - In-degree array:
+     a: 2 (from b, d)
+     b: 0
+     c: 1 (from a)
+     d: 1 (from b)
+   - Start with nodes of in-degree 0 → `[b]`.
+   - Process `b`: remove edges → decrease in-degree of `a` (1), `d` (0).
+   - Now queue = `[d]`.
+   - Process `d`: decrease in-degree of `a` (0).
+   - Now queue = `[a]`.
+   - Process `a`: decrease in-degree of `c` (0).
+   - Now queue = `[c]`.
+   - Process `c`.
+   Order = `b → d → a → c`.
+
+Final Answer
+The alien dictionary order is:
+b d a c
+
+
+Would you like me to also **trace this with recursion (DFS-based topological sort)** so you can see how the call stack unfolds step by step? That way you’ll have both iterative (Kahn’s) and recursive (DFS) perspectives.
