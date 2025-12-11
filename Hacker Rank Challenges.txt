@@ -4345,3 +4345,276 @@ public class CloneGraph {
         System.out.println(cg.toAdjList(clone3)); // []
     }
 }
+
+
+
+
+
+
+
+ECE:
+Slug: doctor-record-sorting-with-comparators
+Slug: dutch-national-flag-hospital-triage-queue
+Contest: www.hackerrank.com/java-ece-queue-2
+
+
+
+
+
+
+AiDS:
+Slug: pacific-atlantic-water-flow-1-2
+Slug: rotting-oranges-7-2
+Contest: 
+
+Perfect 👍 — let’s transform those two LeetCode problems into **HackerRank‑style challenges** with clear problem statements, input/output formats, constraints, sample test cases, and skeleton code.  
+
+---
+
+# 🌊 Challenge 1: Pacific Atlantic Water Flow
+
+### Problem Statement  
+You are given an `m × n` matrix of non‑negative integers representing the height of each cell.  
+Water can flow from a cell to another if the next cell’s height is **less than or equal** to the current cell’s height and they are adjacent (up, down, left, or right).  
+
+- The **Pacific Ocean** touches the left and top edges of the matrix.  
+- The **Atlantic Ocean** touches the right and bottom edges of the matrix.  
+
+Your task is to find all cells from which water can flow to **both** the Pacific and Atlantic oceans.  
+
+---
+
+### Input Format  
+- First line: Two integers `m` and `n` (matrix dimensions).  
+- Next `m` lines: Each line contains `n` integers representing the height matrix.  
+
+---
+
+### Output Format  
+- Print all coordinates `(row, col)` where water can flow to both oceans.  
+- Coordinates should be printed one per line.  
+
+---
+
+### Constraints  
+- 1 ≤ m, n ≤ 200  
+- 0 ≤ height[i][j] ≤ 10^5  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+5 5
+1 2 2 3 5
+3 2 3 4 4
+2 4 5 3 1
+6 7 1 4 5
+5 1 1 2 4
+```
+
+**Output**
+```
+0 4
+1 3
+1 4
+2 2
+3 0
+3 1
+4 0
+```
+
+---
+
+### Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+public class PacificAtlantic {
+    static int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    
+    public static List<int[]> pacificAtlantic(int[][] heights) {
+        int m = heights.length, n = heights[0].length;
+        boolean[][] pacific = new boolean[m][n];
+        boolean[][] atlantic = new boolean[m][n];
+        
+        for(int i=0; i<m; i++) {
+            dfs(heights, pacific, i, 0);
+            dfs(heights, atlantic, i, n-1);
+        }
+        for(int j=0; j<n; j++) {
+            dfs(heights, pacific, 0, j);
+            dfs(heights, atlantic, m-1, j);
+        }
+        
+        List<int[]> res = new ArrayList<>();
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<n; j++) {
+                if(pacific[i][j] && atlantic[i][j]) {
+                    res.add(new int[]{i,j});
+                }
+            }
+        }
+        return res;
+    }
+    
+    private static void dfs(int[][] heights, boolean[][] visited, int i, int j) {
+        visited[i][j] = true;
+        for(int[] d: dirs) {
+            int x = i+d[0], y = j+d[1];
+            if(x<0||y<0||x>=heights.length||y>=heights[0].length||visited[x][y]) continue;
+            if(heights[x][y] >= heights[i][j]) {
+                dfs(heights, visited, x, y);
+            }
+        }
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int m = sc.nextInt(), n = sc.nextInt();
+        int[][] heights = new int[m][n];
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<n; j++) {
+                heights[i][j] = sc.nextInt();
+            }
+        }
+        List<int[]> ans = pacificAtlantic(heights);
+        for(int[] cell: ans) {
+            System.out.println(cell[0] + " " + cell[1]);
+        }
+        sc.close();
+    }
+}
+```
+
+---
+
+# 🍊 Challenge 2: Rotting Oranges
+
+### Problem Statement  
+You are given a grid where each cell can be:  
+- `0` → empty cell  
+- `1` → fresh orange  
+- `2` → rotten orange  
+
+Every minute, any fresh orange adjacent (up, down, left, right) to a rotten orange becomes rotten.  
+
+Your task is to return the **minimum number of minutes** that must elapse until no cell has a fresh orange.  
+If this is impossible, return `-1`.  
+
+---
+
+### Input Format  
+- First line: Two integers `m` and `n` (grid dimensions).  
+- Next `m` lines: Each line contains `n` integers (0, 1, or 2).  
+
+---
+
+### Output Format  
+- Print the minimum number of minutes required, or `-1` if impossible.  
+
+---
+
+### Constraints  
+- 1 ≤ m, n ≤ 100  
+- Grid values ∈ {0, 1, 2}  
+
+---
+
+### Sample Test Case 1  
+**Input**
+```
+3 3
+2 1 1
+1 1 0
+0 1 1
+```
+
+**Output**
+```
+4
+```
+
+---
+
+### Sample Test Case 2  
+**Input**
+```
+3 3
+2 1 1
+0 1 1
+1 0 1
+```
+
+**Output**
+```
+-1
+```
+
+---
+
+### Skeleton Code (Java)
+
+```java
+import java.util.*;
+
+public class RottingOranges {
+    public static int orangesRotting(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        Queue<int[]> q = new LinkedList<>();
+        int fresh = 0;
+        
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<n; j++) {
+                if(grid[i][j] == 2) q.offer(new int[]{i,j});
+                if(grid[i][j] == 1) fresh++;
+            }
+        }
+        
+        int minutes = 0;
+        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        
+        while(!q.isEmpty() && fresh > 0) {
+            int size = q.size();
+            for(int k=0; k<size; k++) {
+                int[] cell = q.poll();
+                for(int[] d: dirs) {
+                    int x = cell[0]+d[0], y = cell[1]+d[1];
+                    if(x<0||y<0||x>=m||y>=n||grid[x][y]!=1) continue;
+                    grid[x][y] = 2;
+                    fresh--;
+                    q.offer(new int[]{x,y});
+                }
+            }
+            minutes++;
+        }
+        
+        return fresh==0 ? minutes : -1;
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int m = sc.nextInt(), n = sc.nextInt();
+        int[][] grid = new int[m][n];
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<n; j++) {
+                grid[i][j] = sc.nextInt();
+            }
+        }
+        System.out.println(orangesRotting(grid));
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ Both challenges are now in **HackerRank format**:  
+- Clear **problem statements**.  
+- Defined **input/output formats**.  
+- **Constraints**.  
+- Multiple **sample test cases**.  
+- **Java skeleton code** ready for students.  
+
+Would you like me to also prepare **extra sample test cases** (edge cases like single cell grids, all rotten, all fresh) so your students can’t hardcode solutions?

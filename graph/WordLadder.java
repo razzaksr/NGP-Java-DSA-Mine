@@ -18,11 +18,19 @@ public class WordLadder {
         while (!queue.isEmpty()) {
             int size = queue.size();
             System.out.println("queue "+queue);
+            /* 
+            
+            BFS level-order traversal:
+            Level 1: ["hit"]
+            Level 2: ["hot"] (1 word)
+            Level 3: ["dot", "lot"] (2 words at same distance)
+            Level 4: ["dog", "log"] (2 words)
+            Level 5: ["cog"]
+            */
             for (int i = 0; i < size; i++) {
                 String word = queue.poll();
                 System.out.println("Polled "+word);
                 if (word.equals(endWord)) return level;
-
                 // Generate neighbors by changing one letter
                 char[] chars = word.toCharArray();
                 System.out.println("Before neighbors\n"+Arrays.toString(chars));
