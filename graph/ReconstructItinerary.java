@@ -28,19 +28,20 @@ public class ReconstructItinerary {
             dfs(next, graph, itinerary);
         }
         itinerary.addFirst(airport); // post-order insertion
+        System.out.println("Every DFS Iter "+itinerary);
     }
 
     // Driver
     public static void main(String[] args) {
         ReconstructItinerary solver = new ReconstructItinerary();
 
-        List<List<String>> tickets1 = Arrays.asList(
-            Arrays.asList("MUC","LHR"),
-            Arrays.asList("JFK","MUC"),
-            Arrays.asList("SFO","SJC"),
-            Arrays.asList("LHR","SFO")
-        );
-        System.out.println(solver.findItinerary(tickets1)); 
+        // List<List<String>> tickets1 = Arrays.asList(
+        //     Arrays.asList("SALEM","COVAI"),
+        //     Arrays.asList("TRICHY","SALEM"),
+        //     Arrays.asList("MADURAI","BLR"),
+        //     Arrays.asList("COVAI","MADURAI")
+        // );
+        // System.out.println(solver.findItinerary(tickets1)); 
         // Output: [JFK, MUC, LHR, SFO, SJC]
 
         List<List<String>> tickets2 = Arrays.asList(

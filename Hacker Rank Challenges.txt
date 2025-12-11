@@ -3874,3 +3874,474 @@ b d a c
 
 
 Would you like me to also **trace this with recursion (DFS-based topological sort)** so you can see how the call stack unfolds step by step? That way you’ll have both iterative (Kahn’s) and recursive (DFS) perspectives.
+
+
+
+ECE:
+Slug: warehouse-inventory-tracking
+Slug: insurance-policy-management-system
+Contest: https://www.hackerrank.com/java-ece-collection-1
+
+
+Got it — let’s tighten these challenges with **constraints** and **at least three test cases each**. I’ll keep them in HackerRank-style, exclusionary, beginner-friendly, and vertical-specific (Supply Chain + Insurance).  
+
+---
+
+## Challenge 1: **Supply Chain – Warehouse Inventory Tracking**
+
+**Problem Statement:**  
+A logistics company wants to track items stored in its warehouse. Each item has:
+- `Integer itemId`  
+- `String itemName`  
+- `Integer quantity`  
+- `String supplierName`  
+
+You need to implement a program that supports:
+1. Adding new items.  
+2. Displaying all items.  
+3. Updating the quantity of an item by ID.  
+4. Deleting an item record by ID.  
+
+
+Input Format:
+- First line: number of operations N.
+- Next N lines:
+- ADD id name quantity supplierName
+- UPDATE id newQuantity
+- DELETE id
+- DISPLAY
+Output Format:
+- For every DISPLAY operation, print all item records in the format:
+Item [id=..., name=..., quantity=..., supplier=...]
+
+
+
+---
+
+### Constraints
+- `1 <= itemId <= 1000`  
+- `1 <= quantity <= 1000`  
+- `itemName` and `supplierName` are non-empty strings without spaces.  
+- Number of operations `N` is between `1` and `50`.  
+
+---
+
+### Test Case 1
+**Input:**
+```
+5
+ADD 301 Laptop 50 Dell
+ADD 302 Router 20 Cisco
+DISPLAY
+UPDATE 301 75
+DISPLAY
+```
+
+**Output:**
+```
+Item [id=301, name=Laptop, quantity=50, supplier=Dell]
+Item [id=302, name=Router, quantity=20, supplier=Cisco]
+Item [id=301, name=Laptop, quantity=75, supplier=Dell]
+Item [id=302, name=Router, quantity=20, supplier=Cisco]
+```
+
+---
+
+### Test Case 2
+**Input:**
+```
+4
+ADD 101 Monitor 15 HP
+ADD 102 Keyboard 40 Logitech
+DELETE 101
+DISPLAY
+```
+
+**Output:**
+```
+Item [id=102, name=Keyboard, quantity=40, supplier=Logitech]
+```
+
+---
+
+### Test Case 3
+**Input:**
+```
+6
+ADD 501 Mouse 100 Dell
+ADD 502 Printer 10 Canon
+DISPLAY
+UPDATE 502 25
+DELETE 501
+DISPLAY
+```
+
+**Output:**
+```
+Item [id=501, name=Mouse, quantity=100, supplier=Dell]
+Item [id=502, name=Printer, quantity=10, supplier=Canon]
+Item [id=502, name=Printer, quantity=25, supplier=Canon]
+```
+
+---
+
+## Challenge 2: **Insurance – Policy Management System**
+
+**Problem Statement:**  
+An insurance company wants to maintain customer policy records. Each policy has:
+- `Integer policyId`  
+- `String customerName`  
+- `String policyType` (Health, Vehicle, Life)  
+- `Double premiumAmount`  
+
+You need to implement a program that supports:
+1. Adding new policies.  
+2. Displaying all policies.  
+3. Updating the premium amount of a policy by ID.  
+4. Deleting a policy record by ID.  
+
+
+Input Format:
+- First line: number of operations N.
+- Next N lines:
+- ADD id customerName policyType premiumAmount
+- UPDATE id newPremium
+- DELETE id
+- DISPLAY
+Output Format:
+- For every DISPLAY operation, print all policy records in the format:
+Policy [id=..., customer=..., type=..., premium=...]
+
+
+
+---
+
+### Constraints
+- `1 <= policyId <= 5000`  
+- `premiumAmount > 0`  
+- `policyType` ∈ {Health, Vehicle, Life}  
+- Number of operations `N` is between `1` and `50`.  
+
+---
+
+### Test Case 1
+**Input:**
+```
+6
+ADD 401 Arjun Health 12000.0
+ADD 402 Meera Vehicle 8000.0
+DISPLAY
+UPDATE 402 9500.0
+DISPLAY
+DELETE 401
+DISPLAY
+```
+
+**Output:**
+```
+Policy [id=401, customer=Arjun, type=Health, premium=12000.0]
+Policy [id=402, customer=Meera, type=Vehicle, premium=8000.0]
+Policy [id=401, customer=Arjun, type=Health, premium=12000.0]
+Policy [id=402, customer=Meera, type=Vehicle, premium=9500.0]
+Policy [id=402, customer=Meera, type=Vehicle, premium=9500.0]
+```
+
+---
+
+### Test Case 2
+**Input:**
+```
+5
+ADD 101 Ravi Life 15000.0
+ADD 102 Priya Health 20000.0
+UPDATE 101 18000.0
+DELETE 102
+DISPLAY
+```
+
+**Output:**
+```
+Policy [id=101, customer=Ravi, type=Life, premium=18000.0]
+```
+
+---
+
+### Test Case 3
+**Input:**
+```
+4
+ADD 201 Kiran Vehicle 5000.0
+ADD 202 Sneha Health 7000.0
+DISPLAY
+UPDATE 202 7500.0
+```
+
+**Output:**
+```
+Policy [id=201, customer=Kiran, type=Vehicle, premium=5000.0]
+Policy [id=202, customer=Sneha, type=Health, premium=7000.0]
+```
+
+---
+
+✨ Now both verticals have **constraints + 3 test cases each**. This makes them HackerRank-ready and ensures trainees can validate CRUD logic step by step.  
+
+Would you like me to also **draft skeleton Java code** for these (bean + ArrayList + switch-case menu), so your trainees can directly implement the operations against these test cases?
+
+
+
+
+
+
+
+
+
+AiDS:
+Slug: surrounded-regions-3-1
+Slug: clone-graph-4
+Contest: https://www.hackerrank.com/java-dsa-graph-4
+
+Here’s how you can structure this problem in a **HackerRank-style challenge format** — with **problem statement, input/output format, constraints, and multiple test cases**.  
+
+---
+
+# Clone Graph
+
+## Problem Statement  
+You are given a reference to a node in a connected undirected graph. Your task is to return a **deep copy (clone)** of the graph.  
+
+Each node in the graph contains:  
+- `int val` (unique identifier for the node)  
+- `List<Node> neighbors` (list of neighboring nodes)  
+
+```java
+class Node {
+    public int val;
+    public List<Node> neighbors;
+}
+```
+
+The graph is represented using an **adjacency list**.  
+- Each list describes the set of neighbors of a node.  
+- Node values are **1-indexed** (the first node has `val = 1`, the second has `val = 2`, etc.).  
+- The given node will always be the first node (`val = 1`).  
+
+You must return the cloned graph starting from node `1`.  
+
+---
+
+## Input Format  
+- A single adjacency list `adjList`, where `adjList[i]` contains the neighbors of node `(i+1)`.  
+
+## Output Format  
+- Return the adjacency list of the cloned graph in the same format.  
+
+---
+
+## Constraints  
+- Number of nodes `n` is in the range `[0, 100]`.  
+- `1 <= Node.val <= 100`  
+- Node values are unique.  
+- No repeated edges and no self-loops.  
+- The graph is connected (all nodes can be visited starting from node `1`).  
+
+---
+
+## Sample Test Cases  
+
+### Test Case 1  
+**Input:**  
+```
+[[2,4],[1,3],[2,4],[1,3]]
+```  
+
+**Output:**  
+```
+[[2,4],[1,3],[2,4],[1,3]]
+```  
+
+**Explanation:**  
+There are 4 nodes in the graph.  
+- Node 1 → neighbors [2,4]  
+- Node 2 → neighbors [1,3]  
+- Node 3 → neighbors [2,4]  
+- Node 4 → neighbors [1,3]  
+
+---
+
+### Test Case 2  
+**Input:**  
+```
+[[]]
+```  
+
+**Output:**  
+```
+[[]]
+```  
+
+**Explanation:**  
+The graph has only one node (val = 1) and no neighbors.  
+
+---
+
+### Test Case 3  
+**Input:**  
+```
+[]
+```  
+
+**Output:**  
+```
+[]
+```  
+
+**Explanation:**  
+The graph is empty, so the output is also empty.  
+
+---
+
+### Test Case 4  
+**Input:**  
+```
+[[2],[1,3],[2]]
+```  
+
+**Output:**  
+```
+[[2],[1,3],[2]]
+```  
+
+**Explanation:**  
+This graph has 3 nodes:  
+- Node 1 → neighbors [2]  
+- Node 2 → neighbors [1,3]  
+- Node 3 → neighbors [2]  
+
+---
+
+import java.util.*;
+
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+
+    public Node() {
+        neighbors = new ArrayList<>();
+    }
+
+    public Node(int val) {
+        this.val = val;
+        neighbors = new ArrayList<>();
+    }
+
+    public Node(int val, List<Node> neighbors) {
+        this.val = val;
+        this.neighbors = neighbors;
+    }
+}
+
+public class CloneGraph {
+
+    // Map to store visited nodes and their clones
+    private Map<Node, Node> visited = new HashMap<>();
+
+    public Node cloneGraph(Node node) {
+        if (node == null) return null;
+
+        // If already cloned, return the clone
+        if (visited.containsKey(node)) {
+            return visited.get(node);
+        }
+
+        // Create a new node with the same value
+        Node cloneNode = new Node(node.val, new ArrayList<>());
+        visited.put(node, cloneNode);
+
+        // Recursively clone neighbors
+        for (Node neighbor : node.neighbors) {
+            cloneNode.neighbors.add(cloneGraph(neighbor));
+        }
+
+        return cloneNode;
+    }
+
+    // Utility: Convert adjacency list to graph
+    public Node buildGraph(List<List<Integer>> adjList) {
+        if (adjList.isEmpty()) return null;
+
+        Map<Integer, Node> map = new HashMap<>();
+        for (int i = 1; i <= adjList.size(); i++) {
+            map.put(i, new Node(i));
+        }
+
+        for (int i = 1; i <= adjList.size(); i++) {
+            for (int neighbor : adjList.get(i - 1)) {
+                map.get(i).neighbors.add(map.get(neighbor));
+            }
+        }
+
+        return map.get(1); // return reference to node 1
+    }
+
+    // Utility: Convert graph back to adjacency list
+    public List<List<Integer>> toAdjList(Node node) {
+        if (node == null) return new ArrayList<>();
+
+        Map<Integer, List<Integer>> adjMap = new HashMap<>();
+        Set<Integer> visited = new HashSet<>();
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(node);
+        visited.add(node.val);
+
+        while (!queue.isEmpty()) {
+            Node curr = queue.poll();
+            adjMap.putIfAbsent(curr.val, new ArrayList<>());
+            for (Node neighbor : curr.neighbors) {
+                adjMap.get(curr.val).add(neighbor.val);
+                if (!visited.contains(neighbor.val)) {
+                    visited.add(neighbor.val);
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        int n = adjMap.size();
+        List<List<Integer>> adjList = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            adjList.add(adjMap.getOrDefault(i, new ArrayList<>()));
+        }
+        return adjList;
+    }
+
+    // Driver for testing
+    public static void main(String[] args) {
+        CloneGraph cg = new CloneGraph();
+
+        // Example 1
+        List<List<Integer>> adjList1 = Arrays.asList(
+            Arrays.asList(2,4),
+            Arrays.asList(1,3),
+            Arrays.asList(2,4),
+            Arrays.asList(1,3)
+        );
+        Node graph1 = cg.buildGraph(adjList1);
+        Node clone1 = cg.cloneGraph(graph1);
+        System.out.println(cg.toAdjList(clone1)); // [[2,4],[1,3],[2,4],[1,3]]
+
+        // Example 2
+        List<List<Integer>> adjList2 = Arrays.asList(
+            Arrays.asList()
+        );
+        Node graph2 = cg.buildGraph(adjList2);
+        Node clone2 = cg.cloneGraph(graph2);
+        System.out.println(cg.toAdjList(clone2)); // [[]]
+
+        // Example 3
+        List<List<Integer>> adjList3 = new ArrayList<>();
+        Node graph3 = cg.buildGraph(adjList3);
+        Node clone3 = cg.cloneGraph(graph3);
+        System.out.println(cg.toAdjList(clone3)); // []
+    }
+}
