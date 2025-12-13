@@ -70,3 +70,135 @@ public class AlienDictionary {
         // Expected Output: "bdac" (b → d → a → c)
     }
 }
+
+/* 
+Perfect, let’s **trace the graph structure step by step** so your trainees can *see* how the algorithm evolves. I’ll show both the **adjacency list** and the **in-degree array** after each comparison.
+
+---
+
+### 📚 Input
+Words = `{"baa", "abcd", "abca", "cab", "cad"}`  
+K = 4 (characters involved: `a, b, c, d`)
+
+---
+
+### Step 1: Initialize Graph
+Adjacency List (empty edges, just nodes):
+```
+a : []
+b : []
+c : []
+d : []
+```
+In-degree array (all zero):
+```
+a=0, b=0, c=0, d=0
+```
+
+---
+
+### Step 2: Compare Adjacent Words
+
+#### (i) Compare `"baa"` vs `"abcd"`
+- First differing char: `b` vs `a` → edge `b → a`
+```
+Adjacency:
+a : []
+b : [a]
+c : []
+d : []
+```
+In-degree:
+```
+a=1, b=0, c=0, d=0
+```
+
+---
+
+#### (ii) Compare `"abcd"` vs `"abca"`
+- First differing char: `d` vs `a` → edge `d → a`
+```
+Adjacency:
+a : []
+b : [a]
+c : []
+d : [a]
+```
+In-degree:
+```
+a=2, b=0, c=0, d=0
+```
+
+---
+
+#### (iii) Compare `"abca"` vs `"cab"`
+- First differing char: `a` vs `c` → edge `a → c`
+```
+Adjacency:
+a : [c]
+b : [a]
+c : []
+d : [a]
+```
+In-degree:
+```
+a=2, b=0, c=1, d=0
+```
+
+---
+
+#### (iv) Compare `"cab"` vs `"cad"`
+- First differing char: `b` vs `d` → edge `b → d`
+```
+Adjacency:
+a : [c]
+b : [a, d]
+c : []
+d : [a]
+```
+In-degree:
+```
+a=2, b=0, c=1, d=1
+```
+
+---
+
+### Step 3: Topological Sort (Kahn’s Algorithm)
+
+- Start with nodes having in-degree = 0 → `b`  
+- Process order:
+
+1. **Take `b`** → result `"b"`  
+   - Reduce in-degree of `a` (2→1), `d` (1→0)  
+   - Queue now: `d`
+
+2. **Take `d`** → result `"bd"`  
+   - Reduce in-degree of `a` (1→0)  
+   - Queue now: `a`
+
+3. **Take `a`** → result `"bda"`  
+   - Reduce in-degree of `c` (1→0)  
+   - Queue now: `c`
+
+4. **Take `c`** → result `"bdac"`
+
+✅ Final Order = `"bdac"`
+
+---
+
+### Visual Recap
+Graph edges:  
+- `b → a`  
+- `d → a`  
+- `a → c`  
+- `b → d`
+
+Topological order: **b → d → a → c**
+
+---
+
+This stepwise adjacency + in-degree trace makes it crystal clear how the algorithm builds and resolves the alien dictionary order.  
+
+Would you like me to also **draw this as a node-arrow diagram** (visual graph with arrows) so your trainees can see the dependencies more intuitively?
+
+*/
