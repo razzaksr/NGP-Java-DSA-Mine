@@ -4365,7 +4365,7 @@ Contest: www.hackerrank.com/java-ece-queue-2
 AiDS:
 Slug: pacific-atlantic-water-flow-1-2
 Slug: rotting-oranges-7-2
-Contest: 
+Contest: www.hackerrank.com/java-dsa-graph-5
 
 Perfect 👍 — let’s transform those two LeetCode problems into **HackerRank‑style challenges** with clear problem statements, input/output formats, constraints, sample test cases, and skeleton code.  
 
@@ -5125,6 +5125,107 @@ Would you like me to also prepare a **visual explanation of the game states** (l
 
 
 
+ECE:
+Slug: patient-management-with-hashmap
+Slug: directed-weighted-graph-representation
+Contest: https://www.hackerrank.com/java-ece-collection-3
+
+Perfect request, S 🙌. Let’s design a **HackerRank-style challenge** around representing a **directed weighted graph**. This will give your trainees practice with adjacency maps, lists, and handling weights — but in a fresh vertical context.
+
+---
+
+# 🚀 HackerRank Challenge: Directed Weighted Graph Representation
+
+### Problem Statement
+A logistics company wants to model its delivery network as a **directed weighted graph**.  
+- Each **vertex** represents a warehouse.  
+- Each **directed edge** represents a delivery route from one warehouse to another.  
+- Each edge has a **weight** representing the delivery cost.  
+
+Write a program to build this graph and print its adjacency list representation.
+
+---
+
+### Input Format
+- First line: integer `n` (number of routes)  
+- Next `n` lines: three values — `source destination weight`  
+
+---
+
+### Output Format
+- Print the adjacency list of the graph.  
+- Each line should show:  
+  ```
+  source -> [(destination1, weight1), (destination2, weight2), ...]
+  ```
+
+---
+
+### Sample Input
+```
+5
+A B 10
+A C 15
+B D 12
+C D 10
+D E 5
+```
+
+### Sample Output
+```
+A -> [(B,10), (C,15)]
+B -> [(D,12)]
+C -> [(D,10)]
+D -> [(E,5)]
+E -> []
+```
+
+---
+
+### HackerRank-Style Template (Java)
+
+```java
+import java.util.*;
+
+public class Solution {
+    private Map<String, List<String>> adjacency;
+
+    public Solution() {
+        adjacency = new HashMap<>();
+    }
+
+    public void addEdge(String src, String dest, int weight) {
+        adjacency.putIfAbsent(src, new ArrayList<>());
+        adjacency.putIfAbsent(dest, new ArrayList<>());
+        adjacency.get(src).add("(" + dest + "," + weight + ")");
+    }
+
+    public void printGraph() {
+        for (String key : adjacency.keySet()) {
+            System.out.println(key + " -> " + adjacency.get(key));
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Solution graph = new Solution();
+        for (int i = 0; i < n; i++) {
+            String src = sc.next();
+            String dest = sc.next();
+            int weight = sc.nextInt();
+            graph.addEdge(src, dest, weight);
+        }
+        graph.printGraph();
+    }
+}
+```
+
+---
+
+✨ This challenge is **different from your earlier undirected graph example** — here we enforce **direction** and **weights**, which makes it closer to real-world logistics, airline routes, or even network latency modeling.  
+
+Would you like me to also **extend this challenge** with a follow-up task (like finding the shortest path using Dijkstra’s algorithm) so trainees can progress from representation to algorithmic application?
 
 
 
@@ -5132,3 +5233,609 @@ Would you like me to also prepare a **visual explanation of the game states** (l
 
 
 
+
+
+AiDS:
+Slug: alien-dictionary-order-1
+Slug: network-delay-time-5
+Contest: https://www.hackerrank.com/java-dsa-graph-7
+
+
+
+
+
+AiDS:
+Slug: subarray-sum-equals-k-16
+Slug: rotate-image-22-1
+Contest: https://www.hackerrank.com/java-dsa-array-1
+
+
+
+ECE:
+Slug: reverse-bits-of-a-32bit-signed-integer
+Slug: twisted-prime-3
+Contest: https://www.hackerrank.com/java-ece-pst-1
+
+Here’s a complete **HackerRank‑formatted challenge** for *Reverse Bits of a 32‑bit signed integer*, including **problem statement, input/output formats, constraints, 3 test cases, and Java implementation**.
+
+---
+
+# 🔄 HackerRank Challenge: Reverse Bits of a 32‑bit Signed Integer
+
+### Problem Statement  
+Given a 32‑bit signed integer `n`, reverse its bits and return the resulting integer.  
+
+- Each bit in the binary representation of `n` should be reversed (from least significant to most significant).  
+- The result should be returned as a decimal integer.  
+
+---
+
+### Input Format  
+- A single integer `n`.  
+
+---
+
+### Output Format  
+- Print the integer result after reversing the bits of `n`.  
+
+---
+
+### Constraints  
+- \(0 \leq n \leq 2^{31} - 2\)  
+- `n` is even.  
+
+---
+
+### Sample Explanation  
+
+#### Example 1  
+**Input**  
+```
+43261596
+```
+
+**Output**  
+```
+964176192
+```
+
+**Explanation**  
+```
+43261596  -> 00000010100101000001111010011100
+964176192 -> 00111001011110000010100101000000
+```
+
+---
+
+#### Example 2  
+**Input**  
+```
+2147483644
+```
+
+**Output**  
+```
+1073741822
+```
+
+**Explanation**  
+```
+2147483644 -> 01111111111111111111111111111100
+1073741822 -> 00111111111111111111111111111110
+```
+
+---
+
+### Test Cases  
+
+#### Test Case 1  
+**Input**  
+```
+43261596
+```
+
+**Output**  
+```
+964176192
+```
+
+---
+
+#### Test Case 2  
+**Input**  
+```
+2147483644
+```
+
+**Output**  
+```
+1073741822
+```
+
+---
+
+#### Test Case 3  
+**Input**  
+```
+2
+```
+
+**Output**  
+```
+1073741824
+```
+
+**Explanation**  
+```
+2 -> 00000000000000000000000000000010
+1073741824 -> 01000000000000000000000000000000
+```
+
+---
+
+## ✅ Java Implementation
+
+```java
+import java.util.*;
+
+public class ReverseBits {
+    public static int reverseBits(int n) {
+        int result = 0;
+        for (int i = 0; i < 32; i++) {
+            result <<= 1;          // shift result left
+            result |= (n & 1);     // add current bit
+            n >>= 1;               // shift input right
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        System.out.println(reverseBits(n));
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is now fully HackerRank‑ready:  
+- Clear **problem statement**  
+- Defined **input/output formats**  
+- **Constraints**  
+- **3 test cases**  
+- Working **Java solution**  
+
+Would you like me to also add the **follow‑up optimization hint** (using precomputed lookup tables for bytes) so students can explore performance improvements?
+
+
+Here’s a complete **HackerRank‑formatted challenge** for *Twisted Prime*, with clear problem statement, input/output formats, constraints, **3 test cases**, and a working **Java implementation**.
+
+---
+
+# 🔢 HackerRank Challenge: Twisted Prime
+
+### Problem Statement  
+A number is called a **Twisted Prime** if:  
+1. The number itself is prime.  
+2. Its reverse is also prime.  
+
+Your task is to determine whether a given integer `N` is a Twisted Prime.  
+
+- If `N` is a Twisted Prime, print `1`.  
+- Otherwise, print `0`.  
+
+---
+
+### Input Format  
+- A single integer `N`.  
+
+---
+
+### Output Format  
+- Print `1` if `N` is a Twisted Prime.  
+- Print `0` otherwise.  
+
+---
+
+### Constraints  
+- \(2 \leq N \leq 10^6\)  
+
+---
+
+### Sample Explanation  
+
+#### Example 1  
+**Input**  
+```
+97
+```
+
+**Output**  
+```
+1
+```
+
+**Explanation**  
+- 97 is prime.  
+- Reverse of 97 is 79, which is also prime.  
+- Hence, 97 is a Twisted Prime.  
+
+---
+
+#### Example 2  
+**Input**  
+```
+43
+```
+
+**Output**  
+```
+0
+```
+
+**Explanation**  
+- 43 is prime.  
+- Reverse of 43 is 34, which is not prime.  
+- Hence, 43 is not a Twisted Prime.  
+
+---
+
+### Test Cases  
+
+#### Test Case 1  
+**Input**  
+```
+97
+```
+
+**Output**  
+```
+1
+```
+
+---
+
+#### Test Case 2  
+**Input**  
+```
+43
+```
+
+**Output**  
+```
+0
+```
+
+---
+
+#### Test Case 3  
+**Input**  
+```
+113
+```
+
+**Output**  
+```
+1
+```
+
+**Explanation**  
+- 113 is prime.  
+- Reverse of 113 is 311, which is also prime.  
+- Hence, 113 is a Twisted Prime.  
+
+---
+
+## ✅ Java Implementation
+
+```java
+import java.util.*;
+
+public class TwistedPrime {
+    // Function to check if a number is prime
+    public static boolean isPrime(int n) {
+        if (n < 2) return false;
+        if (n == 2) return true;
+        if (n % 2 == 0) return false;
+        for (int i = 3; i * i <= n; i += 2) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    // Function to reverse a number
+    public static int reverse(int n) {
+        int rev = 0;
+        while (n > 0) {
+            rev = rev * 10 + (n % 10);
+            n /= 10;
+        }
+        return rev;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+
+        if (isPrime(N) && isPrime(reverse(N))) {
+            System.out.println(1);
+        } else {
+            System.out.println(0);
+        }
+
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is now fully HackerRank‑ready:  
+- Clear **problem statement**  
+- Defined **input/output formats**  
+- **Constraints**  
+- **3 test cases**  
+- Working **Java solution**  
+
+Would you like me to also prepare a **batch input version** (where multiple numbers are checked in one run) so students can practice handling arrays and loops?
+
+
+
+
+
+
+
+AiDS:
+Slug: subsequence-check-2-1
+Slug: roman-numeral-formatter
+Contest: https://www.hackerrank.com/java-dsa-array-2
+
+
+
+ECE:
+Slug: merge-two-sorted-arrays-35
+Slug: spiral-matrix-90
+Contest: https://www.hackerrank.com/java-ece-pst-2
+
+
+
+
+AiDS:
+Slug: container-with-most-water-52-1
+Slug: logistics-regex-validation
+Contest: https://www.hackerrank.com/java-dsa-array-3
+1. Container With Most Water, You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+Return the maximum amount of water a container can store.
+Notice that you may not slant the container.
+
+Example 1:
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+
+Example 2:
+Input: height = [1,1]
+Output: 1
+ 
+Constraints:
+n == height.length
+2 <= n <= 105
+0 <= height[i] <= 104
+
+
+2. Got it 👍 — the **4th use case** from my regex suggestions was **Logistics & Supply Chain**. Let’s turn that into a **HackerRank‑formatted challenge**.
+
+---
+
+# 🚚 HackerRank Challenge: Logistics Regex Validation
+
+### Problem Statement  
+In logistics and supply chain management, identifiers like **container numbers**, **tracking IDs**, and **timestamps** must follow strict formats.  
+Your task is to validate and extract these using **regular expressions**.
+
+You are given a string `S`. Determine which type of logistics identifier it represents:
+
+- **Container Number**: Format `ABCD1234567`  
+  - 4 uppercase letters followed by 7 digits.  
+  - Regex: `^[A-Z]{4}\d{7}$`  
+- **Tracking ID**: Format `TRK-987654321`  
+  - Starts with `TRK-` followed by 9 digits.  
+  - Regex: `^TRK-\d{9}$`  
+- **Timestamp**: Format `YYYY-MM-DD HH:MM:SS`  
+  - Regex: `^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$`  
+
+If the string matches one of these formats, print the type:  
+- `"CONTAINER"`  
+- `"TRACKING"`  
+- `"TIMESTAMP"`  
+
+Otherwise, print `"INVALID"`.
+
+---
+
+### Input Format  
+- A single line containing the string `S`.  
+
+---
+
+### Output Format  
+- Print one of: `"CONTAINER"`, `"TRACKING"`, `"TIMESTAMP"`, or `"INVALID"`.  
+
+---
+
+### Constraints  
+- \(1 \leq |S| \leq 100\)  
+- Input consists of uppercase letters, digits, hyphens, spaces, and colons.  
+
+---
+
+### Sample Explanation  
+
+#### Example 1  
+**Input**  
+```
+ABCD1234567
+```
+
+**Output**  
+```
+CONTAINER
+```
+
+---
+
+#### Example 2  
+**Input**  
+```
+TRK-987654321
+```
+
+**Output**  
+```
+TRACKING
+```
+
+---
+
+#### Example 3  
+**Input**  
+```
+2025-12-17 17:15:00
+```
+
+**Output**  
+```
+TIMESTAMP
+```
+
+---
+
+#### Example 4  
+**Input**  
+```
+XYZ-123
+```
+
+**Output**  
+```
+INVALID
+```
+
+---
+
+### Test Cases  
+
+#### Test Case 1  
+**Input**  
+```
+ABCD1234567
+```
+
+**Output**  
+```
+CONTAINER
+```
+
+---
+
+#### Test Case 2  
+**Input**  
+```
+TRK-987654321
+```
+
+**Output**  
+```
+TRACKING
+```
+
+---
+
+#### Test Case 3  
+**Input**  
+```
+2025-12-17 17:15:00
+```
+
+**Output**  
+```
+TIMESTAMP
+```
+
+---
+
+## ✅ Java Implementation
+
+```java
+import java.util.*;
+import java.util.regex.*;
+
+public class LogisticsRegex {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String S = sc.nextLine().trim();
+
+        if (S.matches("^[A-Z]{4}\\d{7}$")) {
+            System.out.println("CONTAINER");
+        } else if (S.matches("^TRK-\\d{9}$")) {
+            System.out.println("TRACKING");
+        } else if (S.matches("^\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}$")) {
+            System.out.println("TIMESTAMP");
+        } else {
+            System.out.println("INVALID");
+        }
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ This challenge is now fully HackerRank‑ready:  
+- Clear **problem statement**  
+- Defined **input/output formats**  
+- **Constraints**  
+- **3 test cases**  
+- Working **Java solution**  
+
+Would you like me to also prepare a **multi‑line input version** (where multiple strings are validated in one run) so trainees can practice regex on batches of logistics data?
+
+
+
+ECE:
+Slug: subsequence-check-2-1
+Slug: roman-numeral-formatter
+Contest: https://www.hackerrank.com/java-ece-pst-3
+
+
+
+
+
+
+
+AiDS:
+1. Non-overlapping Intervals, Given an array of intervals intervals where intervals[i] = [starti, endi], return the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.
+Note that intervals which only touch at a point are non-overlapping. For example, [1, 2] and [2, 3] are non-overlapping.
+
+Example 1:
+Input: intervals = [[1,2],[2,3],[3,4],[1,3]]
+Output: 1
+Explanation: [1,3] can be removed and the rest of the intervals are non-overlapping.
+
+Example 2:
+Input: intervals = [[1,2],[1,2],[1,2]]
+Output: 2
+Explanation: You need to remove two [1,2] to make the rest of the intervals non-overlapping.
+
+Example 3:
+Input: intervals = [[1,2],[2,3]]
+Output: 0
+Explanation: You don't need to remove any of the intervals since they're already non-overlapping.
+
+Constraints:
+1 <= intervals.length <= 105
+intervals[i].length == 2
+-5 * 104 <= starti < endi <= 5 * 104
