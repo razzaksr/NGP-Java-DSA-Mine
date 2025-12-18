@@ -6,6 +6,7 @@ public class DebtOffsetTriplets {
     public static List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums); // Step 1: Sort the array
+        System.out.println(Arrays.toString(nums));
         for (int i = 0; i < nums.length - 2; i++) {
             // Step 4: Skip duplicate first elements
             if (i > 0 && nums[i] == nums[i - 1]) continue;

@@ -15,7 +15,7 @@ public class MinimumInterval {
             queryWithIndex[i][1] = i;
         }
         Arrays.sort(queryWithIndex, (a, b) -> a[0] - b[0]);
-
+        System.out.println(Arrays.toString(queryWithIndex));
         // Min-heap: [size, end]
         PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
 
@@ -65,108 +65,118 @@ public class MinimumInterval {
     }
 }
 /* 
-### Stepwise trace for the more involved test case with mixed coverage and gaps
+Great question! Let me explain why **2 is NOT in the interval [1,4]** but IS in [2,4].
 
-I’ll trace `intervals2` and `queries2` because it shows adding/removing from the heap, uncovered queries, and late intervals cleanly.
+## Understanding the Problem
 
-- **Input intervals:** `[[2,3], [2,5], [1,8], [20,25]]`
-- **Input queries:** `[2, 19, 5, 22]`
+The question asks: **For each query value, what is the SMALLEST interval that contains it?**
 
----
-
-### Preprocessing and initial state
-
-- **Sort intervals by start:** already sorted → `[[1,8], [2,3], [2,5], [20,25]]`
-- **Attach indices and sort queries:**  
-  - With indices: `[(2,0), (19,1), (5,2), (22,3)]`  
-  - Sorted by query value: `[(2,0), (5,2), (19,1), (22,3)]`
-- **Heap:** empty (min-heap of `[size, end]`)
-- **result:** `[-1, -1, -1, -1]`
-- **i (interval pointer):** `0`
+For **Query = 2**, we need to find which intervals contain the value 2:
 
 ---
 
-### Process query = 2 (original index 0)
+## Intervals that contain 2:
 
-- **Add intervals starting ≤ 2:**
-  - intervals[0] = [1,8] → size = 8 (8−1+1), push `[8, 8]`, i=1
-  - intervals[1] = [2,3] → size = 2 (3−2+1), push `[2, 3]`, i=2
-  - intervals[2] = [2,5] → size = 4 (5−2+1), push `[4, 5]`, i=3
-  - intervals[3] = [20,25] → start=20 > 2, stop adding
-- **Heap state:** `[[2,3], [8,8], [4,5]]` (ordered by size; top = `[2,3]`)
-- **Remove intervals ending < 2:** none (`3,8,5` all ≥ 2)
-- **Pick smallest covering interval:** top `[2,3]` → covers 2  
-  - **result[0] = 2**
-- **State now:**  
-  - **heap:** `[[2,3], [8,8], [4,5]]`  
-  - **result:** `[2, -1, -1, -1]`  
-  - **i:** `3`
+Let's check each interval:
 
----
+### Interval [1,4]:
+- Start: 1, End: 4
+- Contains: 1, 2, 3, 4
+- **Does it contain 2?** ✅ YES
+- **Size:** 4 - 1 + 1 = **4**
 
-### Process query = 5 (original index 2)
+### Interval [2,4]:
+- Start: 2, End: 4
+- Contains: 2, 3, 4
+- **Does it contain 2?** ✅ YES
+- **Size:** 4 - 2 + 1 = **3**
 
-- **Add intervals starting ≤ 5:**
-  - intervals[3] = [20,25] → start=20 > 5, none added
-- **Heap state before pruning:** `[[2,3], [8,8], [4,5]]`
-- **Remove intervals ending < 5:**
-  - Pop `[2,3]` because end=3 < 5
-- **Heap after pruning:** `[[4,5], [8,8]]` (top `[4,5]`)
-- **Pick smallest covering interval:** top `[4,5]` → covers 5  
-  - **result[2] = 4**
-- **State now:**  
-  - **heap:** `[[4,5], [8,8]]`  
-  - **result:** `[2, -1, 4, -1]`  
-  - **i:** `3`
+### Interval [3,6]:
+- Start: 3, End: 6
+- Contains: 3, 4, 5, 6
+- **Does it contain 2?** ❌ NO (2 < 3)
+
+### Interval [4,4]:
+- Start: 4, End: 4
+- Contains: 4
+- **Does it contain 2?** ❌ NO (2 < 4)
 
 ---
 
-### Process query = 19 (original index 1)
+## The Answer: Why [2,4] and not [1,4]?
 
-- **Add intervals starting ≤ 19:**
-  - intervals[3] = [20,25] → start=20 > 19, none added
-- **Heap state before pruning:** `[[4,5], [8,8]]`
-- **Remove intervals ending < 19:**
-  - Pop `[4,5]` (end=5 < 19)
-  - Pop `[8,8]` (end=8 < 19)
-- **Heap becomes empty**
-- **No interval covers 19:**  
-  - **result[1] = -1**
-- **State now:**  
-  - **heap:** `[]`  
-  - **result:** `[2, -1, 4, -1]`  
-  - **i:** `3`
+**Both [1,4] and [2,4] contain the value 2**, but we need the **SMALLEST** interval:
+
+| Interval | Contains 2? | Size | Winner? |
+|----------|-------------|------|---------|
+| **[1,4]** | ✅ Yes | **4** | ❌ Larger |
+| **[2,4]** | ✅ Yes | **3** | ✅ **SMALLEST!** |
+| [3,6] | ❌ No | 4 | - |
+| [4,4] | ❌ No | 1 | - |
+
+**Answer: [2,4] with size 3** because it's the smallest interval containing 2.
 
 ---
 
-### Process query = 22 (original index 3)
+## Visual Representation
 
-- **Add intervals starting ≤ 22:**
-  - intervals[3] = [20,25] → size = 6 (25−20+1), push `[6,25]`, i=4
-- **Heap state:** `[[6,25]]`
-- **Remove intervals ending < 22:** none (25 ≥ 22)
-- **Pick smallest covering interval:** top `[6,25]` → covers 22  
-  - **result[3] = 6**
-- **Final state:**  
-  - **heap:** `[[6,25]]`  
-  - **result:** `[2, -1, 4, 6]`  
-  - **i:** `4`
+```
+Number line:
+    1   2   3   4   5   6
+    └───────────┘         [1,4] - size 4 ✓ contains 2
+        └───────┘         [2,4] - size 3 ✓ contains 2 (SMALLER!)
+            └───────────┘ [3,6] - size 4 ✗ doesn't contain 2
+                └─┘       [4,4] - size 1 ✗ doesn't contain 2
 
----
+Query = 2 is at position 2
+         ↑
+```
 
-### Final output
-
-- **Result mapped back to original query order:** `[2, -1, 4, 6]`
-- Matches the expected output.
+The interval [2,4] is **tighter** around the value 2, making it smaller than [1,4].
 
 ---
 
-### Why this works (concise)
+## All Queries Explained
 
-- **Sorted intervals and queries:** ensures we only add intervals relevant up to each query.  
-- **Min-heap by size:** keeps the shortest currently covering interval at the top.  
-- **Pruning by end < query:** removes intervals that cannot cover the current query, preventing false picks.  
+### Query = 2:
+- Intervals containing 2: **[1,4]** (size 4), **[2,4]** (size 3)
+- Smallest: **[2,4]** → Answer: **3**
 
-If you want, I can also trace `intervals1` and `queries1` to show the behavior when many intervals overlap tightly and multiple queries fall inside the same merged coverage.
+### Query = 3:
+- Intervals containing 3: **[1,4]** (size 4), **[2,4]** (size 3), **[3,6]** (size 4)
+- Smallest: **[2,4]** → Answer: **3**
+
+### Query = 4:
+- Intervals containing 4: **[1,4]** (size 4), **[2,4]** (size 3), **[3,6]** (size 4), **[4,4]** (size 1)
+- Smallest: **[4,4]** → Answer: **1**
+
+### Query = 5:
+- Intervals containing 5: **[3,6]** (size 4)
+- Only one interval: **[3,6]** → Answer: **4**
+
+---
+
+## Key Concept
+
+An interval `[left, right]` contains a value `x` if:
+```
+left ≤ x ≤ right
+```
+
+For value **2**:
+- **[1,4]**: 1 ≤ 2 ≤ 4 ✅ (size = 4)
+- **[2,4]**: 2 ≤ 2 ≤ 4 ✅ (size = 3) ← **SMALLER!**
+
+Both contain 2, but [2,4] is smaller, so it wins!
+
+---
+
+## Why This Matters
+
+The problem specifically asks for the **minimum size** interval. If multiple intervals contain the query value, we must choose the one with the smallest length.
+
+Think of it like finding the tightest fitting box that still contains the value. ✅
+
+Does this clarify why [2,4] is chosen over [1,4] for query = 2?
 
 */
