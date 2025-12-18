@@ -1,4 +1,4 @@
-package PST.arrays;
+package PST.twopointer;
 
 public class TrappingRainWater {
     public static void main(String[] args) {

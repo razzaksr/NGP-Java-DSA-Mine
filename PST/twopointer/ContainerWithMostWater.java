@@ -1,4 +1,4 @@
-package PST.arrays;
+package PST.twopointer;
 
 import java.util.*;
 
