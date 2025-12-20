@@ -1,4 +1,4 @@
-package PST.arrays;
+package PST.greedy;
 
 public class StockAnalysis {
     public static void bestTimeToBuyAndSell(int[] arr){
