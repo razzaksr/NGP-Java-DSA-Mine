@@ -6137,7 +6137,26 @@ triplets[i].length == target.length == 3
 1 <= ai, bi, ci, x, y, z <= 1000
 
 
+GREEDY NOT DISCUSSED WITH STUDENTS BUT IMPLEMENTED
+Partition Labels, You are given a string s. We want to partition the string into as many parts as possible so that each letter appears in at most one part. For example, the string "ababcc" can be partitioned into ["abab", "cc"], but partitions such as ["aba", "bcc"] or ["ab", "ab", "cc"] are invalid.
+Note that the partition is done so that after concatenating all the parts in order, the resultant string should be s.
+Return a list of integers representing the size of these parts.
 
+Example 1:
+Input: s = "ababcbacadefegdehijhklij"
+Output: [9,7,8]
+Explanation:
+The partition is "ababcbaca", "defegde", "hijhklij".
+This is a partition so that each letter appears in at most one part.
+A partition like "ababcbacadefegde", "hijhklij" is incorrect, because it splits s into less parts.
+
+Example 2:
+Input: s = "eccbbbbdec"
+Output: [10]
+
+Constraints:
+1 <= s.length <= 500
+s consists of lowercase English letters.
 
 
 
@@ -6214,3 +6233,469 @@ Explanation: The minimum number of operations to make "seven" a palindrome is 1,
 Constraints:
 1 <= s.length <= 1000
 s consists of only lowercase English letters.
+
+
+
+
+
+
+ECE:
+Slug: find-last-occurrence-of-target-in-sorted-array
+Slug: find-maximum-character-lexicographically
+Contest: https://www.hackerrank.com/java-ece-pst-6
+
+Perfect 👍 — let’s create **two HackerRank‑formatted challenges** for the problems you mentioned. Each will have a clear problem statement, input/output formats, constraints, **3 test cases**, and a working **Java solution**.
+
+---
+
+# 📘 HackerRank Challenge 1: Find Last Occurrence of Target in Sorted Array
+
+### Problem Statement  
+Given a sorted array of integers `nums` and a target integer `x`, find the **last occurrence index** of `x` in the array using a binary search variant.  
+
+- If `x` is present multiple times, return the index of its last occurrence.  
+- If `x` is not present, return `-1`.  
+
+---
+
+### Input Format  
+- First line: integer `n` (size of array).  
+- Second line: `n` space‑separated integers (sorted array `nums`).  
+- Third line: integer `x` (target value).  
+
+---
+
+### Output Format  
+- Print a single integer: the index of the last occurrence of `x`, or `-1` if not found.  
+
+---
+
+### Constraints  
+- \(1 \leq n \leq 10^5\)  
+- \(-10^9 \leq nums[i], x \leq 10^9\)  
+- Array is sorted in non‑decreasing order.  
+
+---
+
+### Test Cases  
+
+#### Test Case 1  
+**Input**  
+```
+6
+1 2 2 2 3 4
+2
+```
+
+**Output**  
+```
+3
+```
+
+---
+
+#### Test Case 2  
+**Input**  
+```
+5
+1 3 5 7 9
+7
+```
+
+**Output**  
+```
+3
+```
+
+---
+
+#### Test Case 3  
+**Input**  
+```
+4
+2 4 6 8
+5
+```
+
+**Output**  
+```
+-1
+```
+
+---
+
+## ✅ Java Implementation
+
+```java
+import java.util.*;
+
+public class LastOccurrenceBinarySearch {
+    public static int findLastOccurrence(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        int result = -1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                result = mid;
+                left = mid + 1; // keep searching right side
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) nums[i] = sc.nextInt();
+        int target = sc.nextInt();
+        System.out.println(findLastOccurrence(nums, target));
+        sc.close();
+    }
+}
+```
+
+---
+
+# 📘 HackerRank Challenge 2: Find Maximum Character (Lexicographically)
+
+### Problem Statement  
+Given a string `s`, split it into two halves (if odd length, the first half gets the extra character).  
+Return the **maximum character (lexicographically)** between the two halves.  
+
+---
+
+### Input Format  
+- A single string `s`.  
+
+---
+
+### Output Format  
+- Print the lexicographically larger character between the two halves.  
+
+---
+
+### Constraints  
+- \(1 \leq |s| \leq 10^5\)  
+- String consists of lowercase English letters only.  
+
+---
+
+### Test Cases  
+
+#### Test Case 1  
+**Input**  
+```
+abcdef
+```
+
+**Output**  
+```
+f
+```
+
+**Explanation**  
+First half = `"abc"`, max = `'c'`.  
+Second half = `"def"`, max = `'f'`.  
+Result = `'f'`.  
+
+---
+
+#### Test Case 2  
+**Input**  
+```
+xyzab
+```
+
+**Output**  
+```
+z
+```
+
+**Explanation**  
+First half = `"xyz"`, max = `'z'`.  
+Second half = `"ab"`, max = `'b'`.  
+Result = `'z'`.  
+
+---
+
+#### Test Case 3  
+**Input**  
+```
+mno
+```
+
+**Output**  
+```
+o
+```
+
+**Explanation**  
+First half = `"mn"`, max = `'n'`.  
+Second half = `"o"`, max = `'o'`.  
+Result = `'o'`.  
+
+---
+
+## ✅ Java Implementation
+
+```java
+import java.util.*;
+
+public class MaxCharSplitHalves {
+    public static char findMaxChar(String s) {
+        int n = s.length();
+        int mid = (n + 1) / 2; // first half gets extra if odd
+        String firstHalf = s.substring(0, mid);
+        String secondHalf = s.substring(mid);
+
+        char maxFirst = 'a';
+        for (char c : firstHalf.toCharArray()) {
+            if (c > maxFirst) maxFirst = c;
+        }
+
+        char maxSecond = 'a';
+        for (char c : secondHalf.toCharArray()) {
+            if (c > maxSecond) maxSecond = c;
+        }
+
+        return (maxFirst > maxSecond) ? maxFirst : maxSecond;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.nextLine().trim();
+        System.out.println(findMaxChar(s));
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ Both challenges are now fully HackerRank‑ready:  
+- Clear **problem statements**  
+- Defined **input/output formats**  
+- **Constraints**  
+- **3 test cases each**  
+- Working **Java solutions**  
+
+Would you like me to also prepare **combined input files** (multiple queries in one run) so trainees can practice handling batch test cases?
+
+
+AiDS:
+Slug: longest-nice-substring-3
+Slug: greatest-common-divisor-euclidean-algorithm
+Contest: https://www.hackerrank.com/java-dsa-recursion
+
+Perfect 👍 — let’s create **two HackerRank‑formatted challenges** for the problems you mentioned. Each will have a clear problem statement, input/output formats, constraints, **3 test cases**, and a working **Java solution**.
+
+---
+
+# 📘 HackerRank Challenge 1: Longest Nice Substring
+
+### Problem Statement  
+A string `s` is called **nice** if, for every letter of the alphabet that `s` contains, it appears **both in uppercase and lowercase**.  
+
+Your task is to return the **longest substring** of `s` that is nice.  
+- If multiple substrings are longest, return the one that appears earliest.  
+- If none exist, return an empty string.  
+
+---
+
+### Input Format  
+- A single string `s`.  
+
+---
+
+### Output Format  
+- Print the longest nice substring. If none exist, print an empty string.  
+
+---
+
+### Constraints  
+- \(1 \leq |s| \leq 100\)  
+- `s` consists of uppercase and lowercase English letters.  
+
+---
+
+### Test Cases  
+
+#### Test Case 1  
+**Input**  
+```
+YazaAay
+```
+
+**Output**  
+```
+aAa
+```
+
+---
+
+#### Test Case 2  
+**Input**  
+```
+Bb
+```
+
+**Output**  
+```
+Bb
+```
+
+---
+
+#### Test Case 3  
+**Input**  
+```
+c
+```
+
+**Output**  
+```
+```
+
+---
+
+## ✅ Java Implementation
+
+```java
+import java.util.*;
+
+public class LongestNiceSubstring {
+    public static String longestNiceSubstring(String s) {
+        if (s.length() < 2) return "";
+        Set<Character> set = new HashSet<>();
+        for (char c : s.toCharArray()) set.add(c);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (set.contains(Character.toLowerCase(c)) && set.contains(Character.toUpperCase(c))) {
+                continue;
+            }
+            String left = longestNiceSubstring(s.substring(0, i));
+            String right = longestNiceSubstring(s.substring(i + 1));
+            return left.length() >= right.length() ? left : right;
+        }
+        return s;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.nextLine().trim();
+        System.out.println(longestNiceSubstring(s));
+        sc.close();
+    }
+}
+```
+
+---
+
+# 📘 HackerRank Challenge 2: Greatest Common Divisor (Euclidean Algorithm)
+
+### Problem Statement  
+Given two integers `a` and `b`, find their **Greatest Common Divisor (GCD)** using the **recursive Euclidean Algorithm**.  
+
+The Euclidean Algorithm works as follows:  
+\[
+gcd(a, b) = gcd(b, a \% b)
+\]  
+until \(b = 0\), at which point \(gcd(a, 0) = a\).  
+
+---
+
+### Input Format  
+- Two space‑separated integers `a` and `b`.  
+
+---
+
+### Output Format  
+- Print the GCD of `a` and `b`.  
+
+---
+
+### Constraints  
+- \(1 \leq a, b \leq 10^9\)  
+
+---
+
+### Test Cases  
+
+#### Test Case 1  
+**Input**  
+```
+48 18
+```
+
+**Output**  
+```
+6
+```
+
+---
+
+#### Test Case 2  
+**Input**  
+```
+101 10
+```
+
+**Output**  
+```
+1
+```
+
+---
+
+#### Test Case 3  
+**Input**  
+```
+56 98
+```
+
+**Output**  
+```
+14
+```
+
+---
+
+## ✅ Java Implementation
+
+```java
+import java.util.*;
+
+public class GCDRecursive {
+    public static int gcd(int a, int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        System.out.println(gcd(a, b));
+        sc.close();
+    }
+}
+```
+
+---
+
+✨ Both challenges are now fully HackerRank‑ready:  
+- Clear **problem statements**  
+- Defined **input/output formats**  
+- **Constraints**  
+- **3 test cases each**  
+- Working **Java solutions**  
+
+Would you like me to also prepare a **combined contest file** (both problems in one input/output set) so trainees can practice solving multiple problems in sequence?
+
+
+
