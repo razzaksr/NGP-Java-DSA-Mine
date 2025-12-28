@@ -6775,3 +6775,186 @@ m == matrix.length
 n == matrix[i].length
 1 <= m, n <= 100
 -104 <= matrix[i][j], target <= 104
+
+
+
+
+ECE:
+Slug: 
+Slug: 
+Contest: 
+Find the Student that Will Replace the Chalk
+There are n students in a class numbered from 0 to n - 1. The teacher will give each student a problem starting with the student number 0, then the student number 1, and so on until the teacher reaches the student number n - 1. After that, the teacher will restart the process, starting with the student number 0 again.
+You are given a 0-indexed integer array chalk and an integer k. There are initially k pieces of chalk. When the student number i is given a problem to solve, they will use chalk[i] pieces of chalk to solve that problem. However, if the current number of chalk pieces is strictly less than chalk[i], then the student number i will be asked to replace the chalk.
+Return the index of the student that will replace the chalk pieces.
+
+Example 1:
+Input: chalk = [5,1,5], k = 22
+Output: 0
+Explanation: The students go in turns as follows:
+- Student number 0 uses 5 chalk, so k = 17.
+- Student number 1 uses 1 chalk, so k = 16.
+- Student number 2 uses 5 chalk, so k = 11.
+- Student number 0 uses 5 chalk, so k = 6.
+- Student number 1 uses 1 chalk, so k = 5.
+- Student number 2 uses 5 chalk, so k = 0.
+Student number 0 does not have enough chalk, so they will have to replace it.
+
+Example 2:
+Input: chalk = [3,4,1,2], k = 25
+Output: 1
+Explanation: The students go in turns as follows:
+- Student number 0 uses 3 chalk so k = 22.
+- Student number 1 uses 4 chalk so k = 18.
+- Student number 2 uses 1 chalk so k = 17.
+- Student number 3 uses 2 chalk so k = 15.
+- Student number 0 uses 3 chalk so k = 12.
+- Student number 1 uses 4 chalk so k = 8.
+- Student number 2 uses 1 chalk so k = 7.
+- Student number 3 uses 2 chalk so k = 5.
+- Student number 0 uses 3 chalk so k = 2.
+Student number 1 does not have enough chalk, so they will have to replace it.
+
+Constraints:
+chalk.length == n
+1 <= n <= 105
+1 <= chalk[i] <= 105
+1 <= k <= 109
+
+
+Minimum Time to Complete Trips
+You are given an array time where time[i] denotes the time taken by the ith bus to complete one trip.
+Each bus can make multiple trips successively; that is, the next trip can start immediately after completing the current trip. Also, each bus operates independently; that is, the trips of one bus do not influence the trips of any other bus.
+You are also given an integer totalTrips, which denotes the number of trips all buses should make in total. Return the minimum time required for all buses to complete at least totalTrips trips.
+
+Example 1:
+Input: time = [1,2,3], totalTrips = 5
+Output: 3
+Explanation:
+- At time t = 1, the number of trips completed by each bus are [1,0,0]. 
+  The total number of trips completed is 1 + 0 + 0 = 1.
+- At time t = 2, the number of trips completed by each bus are [2,1,0]. 
+  The total number of trips completed is 2 + 1 + 0 = 3.
+- At time t = 3, the number of trips completed by each bus are [3,1,1]. 
+  The total number of trips completed is 3 + 1 + 1 = 5.
+So the minimum time needed for all buses to complete at least 5 trips is 3.
+
+Example 2:
+Input: time = [2], totalTrips = 1
+Output: 2
+Explanation:
+There is only one bus, and it will complete its first trip at t = 2.
+So the minimum time needed to complete 1 trip is 2.
+
+Constraints:
+1 <= time.length <= 105
+1 <= time[i], totalTrips <= 107
+
+
+
+
+
+AiDS:
+Slug: 
+Slug: 
+Contest: 
+Coin Change
+You are given an integer array  denoms representing  denoms of different denominations and an integer amount representing a total amount of money.
+Return the fewest number of  denoms that you need to make up that amount. If that amount of money cannot be made up by any combination of the  denoms, return -1.
+You may assume that you have an infinite number of each kind of  denom.
+
+Input:  denoms = [100, 500, 200]  , amount = 1100
+Output: 3
+Input:  denoms = [100, 200, 500]  , amount = 8700
+Output: 18
+Input: [500,300], amount=1100
+Output: 3
+
+Constraints:
+1 <=  denoms.length <= 12
+1 <=  denoms[i] <= 231 - 1
+0 <= amount <= 104
+
+
+Climbing Stairs
+You are climbing a staircase. It takes n steps to reach the top.
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+Example 1:
+Input: n = 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+Example 2:
+Input: n = 3
+Output: 3
+Explanation: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+
+Constraints:
+1 <= n <= 45
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AiDS:
+Slug: 
+Slug: 
+Contest: 
+Corporate Resource Allocation
+    Problem: A company has a limited budget and needs to select projects 
+    that maximize profit. Each project has a cost and expected profit.
+    This is a classic 0/1 Knapsack problem applied to business scenarios.
+    Real-world application: Project management, investment decisions, resource allocation
+
+		Example:
+		Input 1        
+		weights: [1,2,3]   values: [10,15,40]  capacity: 5
+		Output1: 55
+		Input 2
+	        weights: [1,3,4,5]  values: [10,40,50,70]  capacity: 8
+		Output: 110
+		Input 3
+	        weights: [1,2,3,2]  values: [10,20,30,40]  capacity: 5
+		Output: 70
+
+
+
+Cryptocurrency Trading Strategy
+    Problem: Find all palindromic subsequences in price patterns to identify 
+    potential trading opportunities. Palindromic patterns often indicate 
+    market reversals or consolidation phases.
+    Real-world application: Algorithmic trading, pattern recognition, financial analysis
+		Example:
+		Input: HLHLHHL
+		Ouput: 5
+		Input: HHLLHH
+		Ouput: 6
+		Input: HHHLL
+		Ouput: 3
