@@ -62,3 +62,159 @@ Output: [10]
 Constraints:
 1 <= s.length <= 500
 s consists of lowercase English letters.
+
+
+
+Minimum Garden Perimeter to Collect Enough Apples
+In a garden represented as an infinite 2D grid, there is an apple tree planted at every integer coordinate. The apple tree planted at an integer coordinate (i, j) has |i| + |j| apples growing on it.
+You will buy an axis-aligned square plot of land that is centered at (0, 0).
+Given an integer neededApples, return the minimum perimeter of a plot such that at least neededApples apples are inside or on the perimeter of that plot.
+The value of |x| is defined as:
+x if x >= 0
+-x if x < 0
+
+Example 1:
+Input: neededApples = 1
+Output: 8
+Explanation: A square plot of side length 1 does not contain any apples.
+However, a square plot of side length 2 has 12 apples inside (as depicted in the image above).
+The perimeter is 2 * 4 = 8.
+Example 2:
+Input: neededApples = 13
+Output: 16
+Example 3:
+Input: neededApples = 1000000000
+Output: 5040
+
+Constraints:
+1 <= neededApples <= 1015
+
+Sliding window:
+Fixed:
+
+Heart Rate Monitoring in Healthcare:
+A wearable health device monitors a user's heart rate during exercise. To provide health insights, the device must track the highest heart rate over every 1-minute interval.
+Problem Statement: Given an array heartRates[] and an integer k, find the maximum heart rate for each sliding window of size k.
+Input1:
+heartRates = [72, 80, 75, 90, 85, 92, 88]
+k = 3
+Output1:
+Maximum heart rates for each sliding window:
+[80, 90, 90, 92, 92]
+heartRates = [70, 85, 60, 95, 82, 74, 90]
+k = 2
+Maximum heart rates for each sliding window:
+[85, 85, 95, 95, 82, 90]
+Window [70, 85] → max = 85
+Window [85, 60] → max = 85
+Window [60, 95] → max = 95
+Window [95, 82] → max = 95
+Window [82, 74] → max = 82
+Window [74, 90] → max = 90
+
+Defuse the Bomb
+You have a bomb to defuse, and your time is running out! Your informer will provide you with a circular array code of length of n and a key k.
+To decrypt the code, you must replace every number. All the numbers are replaced simultaneously.
+If k > 0, replace the ith number with the sum of the next k numbers.
+If k < 0, replace the ith number with the sum of the previous k numbers.
+If k == 0, replace the ith number with 0.
+As code is circular, the next element of code[n-1] is code[0], and the previous element of code[0] is code[n-1].
+Given the circular array code and an integer key k, return the decrypted code to defuse the bomb!
+Example 1:
+Input: code = [5,7,1,4], k = 3
+Output: [12,10,16,13]
+Explanation: Each number is replaced by the sum of the next 3 numbers. The decrypted code is [7+1+4, 1+4+5, 4+5+7, 5+7+1]. Notice that the numbers wrap around.
+Example 2:
+Input: code = [1,2,3,4], k = 0
+Output: [0,0,0,0]
+Explanation: When k is zero, the numbers are replaced by 0. 
+Example 3:
+Input: code = [2,4,9,3], k = -2
+Output: [12,5,6,13]
+Explanation: The decrypted code is [3+9, 2+3, 4+2, 9+4]. Notice that the numbers wrap around again. If k is negative, the sum is of the previous numbers.
+Constraints:
+n == code.length
+1 <= n <= 100
+1 <= code[i] <= 100
+-(n - 1) <= k <= n - 1
+
+
+Given an array where each element represents daily sales revenue, and two integers k (window size in days) and X (target threshold), write a program to count how many contiguous subarrays of length k have a sum greater than or equal to X.
+Real‑World Application:
+- Retail: Detect sales streaks above a target.
+- Finance: Count how many consecutive trading days meet profit targets.
+- Healthcare: Monitor patient metrics (e.g., blood sugar readings) over fixed intervals.
+- Manufacturing: Track production output over rolling windows to ensure quotas are met.
+Example
+- Input: sales = [2,1,5,1,3,2], k = 3, X = 7
+- Output: 2
+- Explanation: Subarrays [2,1,5] (sum=8) and [1,3,2] (sum=6, not valid), but [5,1,3] (sum=9) are valid. So total = 2.
+
+Given an array where each element represents the daily defect count, and an integer k (window size in days), write a program to compute the average number of defects for every contiguous subarray of length k.
+Real‑World Application:
+- Manufacturing: Track rolling averages of defects or production output.
+- Finance: Calculate moving averages of stock prices.
+- Healthcare: Monitor patient vitals (e.g., blood pressure) over fixed intervals.
+- Education: Compute average test scores over consecutive exams.
+Example
+- Input: defects = [1,3,2,6,-1,4,1,8,2], k = 5
+- Output: [2.2, 2.8, 2.4, 3.6, 2.8]
+- Explanation:
+- First 5 days → average = (1+3+2+6+(-1))/5 = 2.2
+- Next 5 days → average = (3+2+6+(-1)+4)/5 = 2.8
+- And so on…
+
+
+
+
+
+
+
+Variable:
+
+Given an array where each element represents daily expenses, and an integer K (budget limit), write a program to find the length of the longest contiguous subarray whose sum is less than or equal to K.
+Real‑World Application:
+- Finance: Track longest streak of days staying within budget.
+- Healthcare: Monitor longest period where patient vitals remain under safe thresholds.
+- Retail: Find longest streak of days where sales discounts stay within a set limit.
+- Manufacturing: Identify longest run of production batches where defect counts remain under tolerance.
+Example
+- Input: expenses = [2,1,5,2,3], K = 7
+- Output: 3
+- Explanation:
+- Subarray [2,1,5] → sum = 8 (>7) ❌
+- Subarray [1,5,2] → sum = 8 (>7) ❌
+- Subarray [2,1] → sum = 3 (≤7) ✅ length=2
+- Subarray [1,5] → sum = 6 (≤7) ✅ length=2
+- Subarray [5,2] → sum = 7 (≤7) ✅ length=2
+- Subarray [2,3] → sum = 5 (≤7) ✅ length=2
+- Longest valid streak length = 3 (e.g., [2,1,5] trimmed to [2,1,5] before shrink gives 3).
+
+
+Given a string where each character represents a customer ID, write a program to find the length of the longest substring that contains no repeating characters.
+Real‑World Application:
+- Telecom: Track longest streak of unique customer IDs in activity logs.
+- Cybersecurity: Detect longest sequence of unique login attempts before a repeat.
+- Healthcare: Monitor longest streak of unique patient IDs in a queue system.
+- Education: Find longest sequence of unique student IDs in exam submissions.
+- Retail: Identify longest streak of unique product codes scanned at checkout.
+Example
+- Input: "abcabcbb"
+- Output: 3
+- Explanation: The longest substring without repeating characters is "abc".
+- Input: "bbbbb"
+- Output: 1
+- Explanation: Only "b" is valid since all characters repeat.
+
+
+Given an array where each element represents the number of patients admitted per day, and an integer target representing the minimum threshold of admissions, write a program to find the length of the smallest contiguous subarray whose sum is greater than or equal to target.
+Real‑World Application:
+- Healthcare: Detect shortest period where patient admissions exceed capacity.
+- Finance: Find shortest streak of days where expenses exceed a budget threshold.
+- Retail: Identify shortest span of days where sales cross a target.
+- Manufacturing: Track shortest run of batches where production output meets quota.
+Example
+- Input: admissions = [2,3,1,2,4,3], target = 7
+- Output: 2
+- Explanation: The subarray [4,3] has sum = 7, which meets the target with length = 2.
+

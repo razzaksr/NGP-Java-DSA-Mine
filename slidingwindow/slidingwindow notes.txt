@@ -1,0 +1,60 @@
+**Quick Answer:**  
+The **sliding window algorithm** is a technique used to efficiently process contiguous sequences (subarrays or substrings) by maintaining a "window" that moves step by step across the data. Instead of recalculating everything from scratch, the algorithm updates results incrementally as the window slides. There are two main types: **fixed-size windows** and **variable-size windows**.
+
+---
+
+## 🔎 Sliding Window Algorithm Explained
+- **Core Idea:**  
+  Imagine you want to analyze every segment of length `k` in an array. A naive approach would recalculate sums or checks for each segment, costing \(O(n \cdot k)\). The sliding window technique reduces this to \(O(n)\) by reusing previous computations.
+  
+- **How It Works:**  
+  - Start with an initial window (a subset of elements).  
+  - As you move the window forward, remove the effect of the element leaving and add the effect of the new element entering.  
+  - Continue until the window has traversed the entire array or string.
+
+---
+
+## 📊 Types of Sliding Window
+
+| Type | Description | Example Problems | Complexity Benefit |
+|------|-------------|------------------|--------------------|
+| **Fixed-size window** | Window size `k` is constant. You slide across the array, maintaining sums, counts, or other metrics. | Maximum sum of subarray of size `k`, moving average, Defuse the Bomb (LeetCode 1652). | Reduces from \(O(n \cdot k)\) to \(O(n)\). |
+| **Variable-size window** | Window size changes dynamically based on conditions (expand or shrink). | Longest substring without repeating characters, smallest subarray with sum ≥ target. | Avoids nested loops, reduces from \(O(n^2)\) to \(O(n)\). |
+
+---
+
+## 🧪 Examples You Can Show Trainees
+1. **Fixed-size:**  
+   - Find the maximum sum of any subarray of length 3.  
+   - Instead of summing each subarray separately, keep a rolling sum and update as the window slides.
+
+2. **Variable-size:**  
+   - Find the longest substring without repeating characters.  
+   - Expand the window until a duplicate appears, then shrink from the left until the condition is satisfied.
+
+---
+
+## ⚠️ Risks & Teaching Notes
+- **Common mistake:** Forgetting to update both ends of the window correctly.  
+- **Trade-off:** Sliding window works only for problems involving contiguous segments. For non-contiguous subsequences, other techniques (like DP) are needed.  
+- **Teaching tip:** Start with a brute-force nested loop solution, then show how sliding window eliminates redundant work.
+
+---
+
+## ✅ Conclusion
+The **sliding window algorithm** is a powerful optimization technique for contiguous sequence problems.  
+- **Fixed-size windows** are best for problems with a strict segment length.  
+- **Variable-size windows** are best when conditions dictate how far the window expands or shrinks.  
+
+This makes it a versatile tool in both **array** and **string** problems, and a great concept to teach trainees for interview preparation and real-world efficiency.
+
+---
+
+Sources:  
+- GeeksforGeeks – [Sliding Window Technique](https://www.geeksforgeeks.org/dsa/window-sliding-technique/)  
+- BuiltIn – [Sliding Window Algorithm Explained](https://builtin.com/data-science/sliding-window-algorithm)  
+- AlgoCademy – [Mastering Sliding Window Techniques](https://algocademy.com/blog/mastering-sliding-window-techniques-a-comprehensive-guide-for-coding-interviews/)
+
+---
+
+Would you like me to prepare a **visual diagram** (step-by-step window movement) so your trainees can see how the window slides across an array?

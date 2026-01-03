@@ -1,40 +1,28 @@
 package dc;
 
+import java.util.Arrays;
+
 public class CuttingRibbons {
     public static int maxLength(int[] ribbons, int k) {
         int left = 1;
-        int right = getMax(ribbons);
+        int right = Arrays.stream(ribbons).max().getAsInt();
         int ans = 0;
-
         while (left <= right) {
             int mid = left + (right - left) / 2;
-
             if (canCut(ribbons, k, mid)) {
                 ans = mid;       // valid length, try longer
                 left = mid + 1;
-            } else {
-                right = mid - 1; // too long, try shorter
-            }
+            } else right = mid - 1; // too long, try shorter
         }
-
         return ans;
     }
-
-    private static int getMax(int[] ribbons) {
-        int max = 0;
-        for (int r : ribbons) {
-            max = Math.max(max, r);
-        }
-        return max;
-    }
-
     private static boolean canCut(int[] ribbons, int k, int length) {
-        long count = 0;
+        int count = 0;
         for (int r : ribbons) {
             count += r / length;
             if (count >= k) return true; // early exit
         }
-        return count >= k;
+        return false;
     }
     public static void main(String[] args) {
         System.out.println(maxLength(new int[]{9,7,5}, 3)); 

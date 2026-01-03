@@ -6780,10 +6780,10 @@ n == matrix[i].length
 
 
 ECE:
-Slug: 
-Slug: 
-Contest: 
-Find the Student that Will Replace the Chalk
+Slug: find-the-student-that-will-replace-the-chalk-1
+Slug: minimum-time-to-complete-trips-3
+Contest: https://www.hackerrank.com/java-ece-pst-8
+1. Find the Student that Will Replace the Chalk
 There are n students in a class numbered from 0 to n - 1. The teacher will give each student a problem starting with the student number 0, then the student number 1, and so on until the teacher reaches the student number n - 1. After that, the teacher will restart the process, starting with the student number 0 again.
 You are given a 0-indexed integer array chalk and an integer k. There are initially k pieces of chalk. When the student number i is given a problem to solve, they will use chalk[i] pieces of chalk to solve that problem. However, if the current number of chalk pieces is strictly less than chalk[i], then the student number i will be asked to replace the chalk.
 Return the index of the student that will replace the chalk pieces.
@@ -6822,7 +6822,7 @@ chalk.length == n
 1 <= k <= 109
 
 
-Minimum Time to Complete Trips
+2. Minimum Time to Complete Trips
 You are given an array time where time[i] denotes the time taken by the ith bus to complete one trip.
 Each bus can make multiple trips successively; that is, the next trip can start immediately after completing the current trip. Also, each bus operates independently; that is, the trips of one bus do not influence the trips of any other bus.
 You are also given an integer totalTrips, which denotes the number of trips all buses should make in total. Return the minimum time required for all buses to complete at least totalTrips trips.
@@ -6855,28 +6855,40 @@ Constraints:
 
 
 AiDS:
-Slug: 
-Slug: 
-Contest: 
-Coin Change
-You are given an integer array  denoms representing  denoms of different denominations and an integer amount representing a total amount of money.
-Return the fewest number of  denoms that you need to make up that amount. If that amount of money cannot be made up by any combination of the  denoms, return -1.
-You may assume that you have an infinite number of each kind of  denom.
+Slug: maximum-subarray-sum-kadanes-algorithm-with-dp
+Slug: climbing-stairs-48
+Contest: https://www.hackerrank.com/java-dsa-dynamic-programming-1
 
-Input:  denoms = [100, 500, 200]  , amount = 1100
-Output: 3
-Input:  denoms = [100, 200, 500]  , amount = 8700
-Output: 18
-Input: [500,300], amount=1100
-Output: 3
+1. Max SubSum Kaden's with DP:
+You are given an integer array nums. Find the contiguous subarray (at least one element) with the maximum possible sum.
+Input Format:
+- nums: List of integers of length n (1 ≤ n ≤ 10⁵; -10⁴ ≤ nums[i] ≤ 10⁴)
+Output Format:
+- An integer, the maximum subarray sum.
 
-Constraints:
-1 <=  denoms.length <= 12
-1 <=  denoms[i] <= 231 - 1
-0 <= amount <= 104
+Test Case 1
+Input:
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+Output:
+6
+Explanation:
+Maximum sum is from subarray [4, -1, 2, 1].
+Test Case 2
+Input:
+nums = [1, 2, 3, 4, 5]
+Output:
+15
+Explanation:
+All elements are positive, so the whole array is the maximum subarray.
+Test Case 3
+Input:
+nums = [-1, -2, -3, -4]
+Output:
+-1
+Explanation:
+All elements are negative, so the maximum subarray is the single element [-1].
 
-
-Climbing Stairs
+2. Climbing Stairs
 You are climbing a staircase. It takes n steps to reach the top.
 Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
 
@@ -6900,33 +6912,16 @@ Constraints:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ECE:
+Slug: maximum-subarray-sum-kadanes-algorithm-with-dp
+Slug: climbing-stairs-48
+Contest: https://www.hackerrank.com/java-ece-pst-9
 
 
 AiDS:
-Slug: 
-Slug: 
-Contest: 
+Slug: corporate-resource-allocation
+Slug: bioinformatics-dna-sequence-analysis
+Contest: https://www.hackerrank.com/java-dsa-dynamic-programming-2
 Corporate Resource Allocation
     Problem: A company has a limited budget and needs to select projects 
     that maximize profit. Each project has a cost and expected profit.
@@ -6945,16 +6940,42 @@ Corporate Resource Allocation
 		Output: 70
 
 
+Bioinformatics - DNA Sequence Analysis
+Problem: Find the Longest Common Subsequence (LCS) between two DNA sequences.
+Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0.
+A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
+For example, "ace" is a subsequence of "abcde".
+A common subsequence of two strings is a subsequence that is common to both strings.
+This helps in identifying genetic similarities, evolutionary relationships,and mutations in genetic research.
+Real-world application: Genetics, medical research, evolutionary biology
+Example:
+Input: text1 = abcde, text2 = ace
+Ouput: 3
+Input: text1 = abc, text2 = def
+Ouput: 0
+Input: text1 = aggtab, text2 = gxtxayb
+Ouput: 4
+Input: text1 = aaaa, text2 = aa
+Ouput: 2
+Input: text1 = abcdef, text2 = acf
+Ouput: 3
 
-Cryptocurrency Trading Strategy
-    Problem: Find all palindromic subsequences in price patterns to identify 
-    potential trading opportunities. Palindromic patterns often indicate 
-    market reversals or consolidation phases.
-    Real-world application: Algorithmic trading, pattern recognition, financial analysis
-		Example:
-		Input: HLHLHHL
-		Ouput: 5
-		Input: HHLLHH
-		Ouput: 6
-		Input: HHHLL
-		Ouput: 3
+
+
+ECE:
+Slug: corporate-resource-allocation
+Slug: bioinformatics-dna-sequence-analysis
+Contest: https://www.hackerrank.com/java-ece-pst-10
+
+
+ECE:
+Slug: sales-streak-detection
+Slug: longest-unique-substring-9
+Contest: https://www.hackerrank.com/java-ece-pst-11
+
+
+ECE:
+Slug: rolling-average-of-defects
+Slug: smallest-subarray-with-admissions-threshold
+Slug: defuse-the-bomb-5
+Contest: https://www.hackerrank.com/java-ece-pst-final
